@@ -11,6 +11,11 @@ The energy monitor firmware is built on micropython to:
 ### Software 
 - OS: [micropython v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)
 - IDE: [uPyCraft](http://docs.dfrobot.com/upycraft/)
+#### uPyCraftism
+__IMPORTANT__: uPyCraft has a folder in it called _workspace_.  This folder is mapped (mounted) to a directory on the Mac's/PC's hard drive.  This is why the firmware starts below the _workspace_ folder.  This folder needs to be mapped to uPyCraft's folder.  These are the steps we took:
+- Choose Tools/InitConfig  You'll be asked if you want to init. Choose yes.  
+- Click on the workspace folder.  This brings up a Finder dialog box.  Choose the energy_monitor_firmware directory.
+
 # Software Design
 [main.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/main.py) gives us a general flow of the code.
 ## Monitor Status
@@ -36,12 +41,19 @@ class CalibrationError():
  # Preparing the ESP32
  At least for testing, we are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  For the IDE we are using [uPyCraft](http://docs.dfrobot.com/upycraft/).   
  ## Install micropython
- - Plug the microprocessor into the Mac's USB port.
+- Plug the microprocessor into the Mac's USB port.
 - Open uPyCraft on the Mac.
 - Check Tools/Build from the menu and make sure ESP32 is checked.
 - Check Tools/Serial from the menu and select the SLAB_USBtoUART serial port.  When this is done, the >>> repl command prompt should be seen in the lower window.  
-- Go to Tools/BurnFirmware.    [This is the micropython build we currently use.](micropython_build/esp32-20190529-v1.11.bin).  This version of micropython is available within [the energy monitor firmware's GitHub repository](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build).  For ESP32 micropython firmware, the settings should be:  
+- Go to Tools/BurnFirmware.    [This is the micropython build we currently use](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build).  This version of micropython is available within [the energy monitor firmware's GitHub repository](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build).  For ESP32 micropython firmware, the settings should be:  
 ![micropython burn firmware dialog](images/EnergyMonitorFirmware/uPyCraft_burnimage_dialog.png)  
 Once the fields are filled in, click on OK.  This starts the erase and burn process.   
 - uPyCraft disconnects.  Once the microprocessor restarts, go ack to Tools/Select and choose the SLAB_USBtoUSART serial port. 
+## Copy micropython Libraries
+The libraries we use to connect to wifi and read/send energy readings include:
+  - atm90e32_registers.py and atm90e32_u.py from workSpace/read_monitor.
+  - config.py from workSpace/config.
+  - wifi_connect.py from workSpace/join_wifi.
+  - send_reading from workSpace/send_reading.
+
 
