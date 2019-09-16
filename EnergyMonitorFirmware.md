@@ -45,12 +45,42 @@ class CalibrationError():
  - Load the class that will handle all the wifi calls: `from wifi_connect import WifiAccess`
  - Make an instance of the wifi class: `join_wifi = WifiAccess()`
  - Connect to the wifi network: `join_wifi.get_connected()`
- ### get_connected()
- 
+ ### Monitor Install
+ When the monitor is first installed, the homeowner's wifi ssid and password is not known.  The `__init__` method of the WifiAccess class tries to read the SSID and password using the `read_config` method in [config.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/config/config.py).  If the SSID and password can't be retrieved, the class's wifi_state variable is set to no_ssid_pwd.  If the SSID and password were retrieve, wifi_state is set to not_connected.
 
- When the monitor is first installed, the homeowner's wifi ssid and password is not known.  
- ### SSID and Password
- When the monitor is first plugged in,
+ #### Setting SSID and password
+
+ Monitor install focuses on the no_ssid_password state.  When WifiAccess()'s `get_connected()` method figures out the monitor doesn't know the wifi's SSID and password, it moves the code into being a web server acting as a wireless Access Point with the SSID `fithome_abc`.   An Access Point shows up within the Mac's/PC's list of wifi networks.
+
+![wifi ssid](images/EnergyMonitorFirmware/wifi_ssid.png)   
+- Connect to the `fithome_abc` Access Point on your Mac/PC.  If you don't see the Access Point and the monitor isn't blinking red, there's a good chance the monitor is too far from the wifi signal.  Right now, we have a poor solution - get the wifi signal to be stronger in the area where the monitor is...hmmm....
+- Once connected to `fithome_abc`, open a browser window and enter the address `192.168.4.1`.  At this point, you should be "talking" with the monitor's AP firmware and see a page that shows the SSIDs available in the homeowner's house.
+
+![wifi client](images/EnergyMonitorFirmware/wifi_client.png)  
+
+Click on the radio button of the SSID the monitor should use and type in the password.  If the monitor can log in, you'll see:    
+  
+![wifi successful login](images/EnergyMonitorFirmware/wifi_success_ssid_password.png)  
+Behind the scenes, the code in `wifi_connect.py` is using `<form action="configure"` to figure out if the homeowner has sent the SSID and password.  
+```
+  try:
+      tag = ure.search("(?:GET|POST) /(.*?)(?:\\?.*?)? HTTP",
+                        request).group(1).decode("utf-8").rstrip("/")
+  except Exception:
+      tag = ure.search(
+          "(?:GET|POST) /(.*?)(?:\\?.*?)? HTTP", request).group(1).rstrip("/")
+  if tag == "":
+      # Get the ssid and password.
+      self._handle_ssid_pwd_ui(client)
+      # Try to join the self.wifi.
+  elif tag == "configure":
+      self._handle_join_wifi(client, request)
+```                    
+`_handle_join_wifi()` takes care of adding the SSID and password into the config file in case the monitor's firmware needs it again.  It also connects to the network. _Note: We haven't spent time exploring this, but from what we can tell, the ESP32 stores the SSID and password somewhere (EEPROM? FLASH?).  It doesn't seem to access the variables from the config file, rather can just log in._
+# Ongoing wifi
+Once the monitor knows the SSID and password, the monitor should be able to connect to the homeowner's wifi.
+
+
  # Preparing the ESP32
  At least for testing, we are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  For the IDE we are using [uPyCraft](http://docs.dfrobot.com/upycraft/).   
  # Install micropython
