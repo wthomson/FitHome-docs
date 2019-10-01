@@ -24,8 +24,8 @@ miso_pin = Pin(12)
 sck_pin = Pin(14)
 cs_pin = 15
 ```
-![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png)
-In addition to SPI wiring, a red and green led, each with a resistor, are wired:
+![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png)  
+In addition to SPI wiring, a red and green led - each with a resistor - are wired:
 - red LED on pin 27
 - green LED on pin 32
 The resistors are between 220 and 1K ohm.
