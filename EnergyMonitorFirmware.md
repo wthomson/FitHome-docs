@@ -13,14 +13,46 @@ Here's an [example](examples/CP_ATM90E32_Basic_SPI.py):
 The energy monitor firmware is built on micropython to:
 * Join the homeowner's wifi.  
 * Send energy readings to the Firebase RT db.  
-### Hardware
-- Energy Monitor - The firmware was written for [CircuitSetup's Split SIngle Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/).  This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
+## Hardware
+- Energy Monitor - The firmware was written for [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/).  This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
 - Microprocessor - At least for testing, we are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).
-### Software 
+### Wiring
+The ATM90e32 on the Energy Meter speaks to the ESP32 using the [HSPI pins](https://docs.micropython.org/en/latest/esp8266/quickref.html#hardware-spi-bus):
+```
+mosi_pin = Pin(13)
+miso_pin = Pin(12)
+sck_pin = Pin(14)
+cs_pin = 15
+```
+![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png)
+In addition to SPI wiring, a red and green led, each with a resistor, are wired:
+- red LED on pin 27
+- green LED on pin 32
+The resistors are between 220 and 1K ohm.
+## Software 
 - OS: [micropython v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)
 - IDE: [uPyCraft](http://docs.dfrobot.com/upycraft/).  I started with uPyCraft.  Then modifying a file, copying to the ESP32 started having too many issues (we can't wait for true USB!).  So we started using [rshell](https://pypi.org/project/rshell/).  
 #### rshell
 rshell has great documentation.  We start a Terminal within the workspace folder of the project.  From within rshell we can go between repl and copying files from our Mac to the ESP32.
+- get into rshell:
+```
+$ rshell
+Welcome to rshell. Use Control-D (or the exit command) to exit rshell.
+
+No MicroPython boards connected - use the connect command to add one
+```
+- attach to the ESP32:
+```
+connect serial /dev/tty.SLAB_USBtoUART 115200
+Connecting to /dev/tty.SLAB_USBtoUART (buffer-size 512)...
+Trying to connect to REPL  connected
+Testing if sys.stdin.buffer exists ... Y
+Retrieving root directories ... /boot.py/
+Setting time ... Sep 30, 2019 11:00:04
+Evaluating board_name ... pyboard
+Retrieving time epoch ... Jan 01, 2000
+```
+
 #### uPyCraftism
 __IMPORTANT__: uPyCraft has a folder in it called _workspace_.  This folder is mapped (mounted) to a directory on the Mac's/PC's hard drive.  This is why the firmware starts below the _workspace_ folder.  This folder needs to be mapped to uPyCraft's folder.  These are the steps we took:
 - Choose Tools/InitConfig  You'll be asked if you want to init. Choose yes.  
@@ -29,6 +61,35 @@ __IMPORTANT__: uPyCraft has a folder in it called _workspace_.  This folder is m
 There are a few "not ready for primetime" gotchas we found out about while testing that we just had to work around:
 - After setting up an Access Point (see below under Monitor Install), ocassionally the micropython libraries seemed to leak memory.  Then the ESP32 froze.  Restarting the ESP32 at this point "fixed" this.
 - The ESP32 needs to be plugged in BEFORE the 9V power transformer starts up the energy monitor.  We put a few second delay in main.py to accomodate plugging in the 9V monitor after restarting the ESP32.
+# Preparing the ESP32
+ At least for testing, we are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  
+ # Install micropython
+ [Sparkfun had a nice write up](https://learn.sparkfun.com/tutorials/how-to-load-micropython-on-a-microcontroller-board/esp32-thing).  The [micropython binary we used is v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)
+
+## Copy micropython Libraries
+The libraries we use to connect to wifi and read/send energy readings include:
+  - [atm90e32_registers.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/read_monitor/atm90e32_registers.py) and [atm90e32_u.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/read_monitor/atm90e32_u.py) from workspace/read_monitor.
+  - [config.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/config/config.py) from workspace/config.
+  - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/join_wifi/wifi_connect.py) from workspace/join_wifi.
+  - [send_reading](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/send_reading/send_reading.py) from workspace/send_reading.
+  - [app_error.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/errors/app_error.py) from workspace/errors.
+  ### Steps
+  Within the uPyCraft IDE:  
+  - Make sure you are "talking" with micropython by checking if the repl >>> prompts are in the bottom window.
+  - create a lib file under the device folder.
+  - drag/drop each of the lib files from within the workspace folder to the lib directory under the device folder.
+  - drag/drop main.py to be under the device folder.
+  - create `config.json` and copy it to the lib directory.  The `config.json` file looks like:  
+  ```
+  {
+    "monitor":"bambi-07052019",
+    "project_id":"my-firebase-projectid-00989"
+}  
+```
+The monitor name is in the Database under the homeowner's member record.  
+![monitor name in db](images/Database/monitor_node.png) 
+  
+The monitor name is created when the homeowner becomes a FitHome member.  The conceptual model is a homeowner becomes a FitHome member for one month.  The homeowner uses the FitHome App to start their month of training.  During this process, one of the available monitors is assigned to the owner.  To uniquely identify this month of use, the monitor name assigned to the homeowner is appended with the date the homeowner signed up for FitHome membership.  In this example, the monitor named "bambi" was assigned to the homeowner.  The homeowner signed up on July 5th, 2019.
 
 # Software Design
 [main.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/main.py) gives us a general flow of the code.
@@ -50,7 +111,7 @@ class NoMonitor():
     explanation = 'Could not contact a monitor.'
     blinks = 1
  ```
- Each error is assigned a number of blinks.  So if the red LED starts blinking, we need to check how many blinks happen and then figure  out from there is we can debug why the monitor is not working.
+ Each error is assigned a number of blinks.  If the red LED starts blinking, we need to check how many blinks happen and then figure  out from there is we can debug why the monitor is not working.
  ### All OK
  Every time a reading is sent to the db, the green light blinks.  If we watch the monitor for a time within which a reading should occur, the green LED should blink.  If it doesn't, there is a really, really good chance readings are not being made or at least not being sent to the db.
  ## Connecting to WiFi
@@ -65,6 +126,7 @@ class NoMonitor():
  When the monitor is first installed, the homeowner's wifi ssid and password is not known.  The `__init__` method of the WifiAccess class tries to read the SSID and password using the `read_config` method in [config.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/config/config.py).  If the SSID and password can't be retrieved, the class's wifi_state variable is set to no_ssid_pwd.  If the SSID and password were retrieve, wifi_state is set to not_connected.
 
  #### Setting SSID and password
+ _Note: There must be a cleaner way to get the SSID and password!_
 
  Monitor install focuses on the no_ssid_password state.  When WifiAccess()'s `get_connected()` method figures out the monitor doesn't know the wifi's SSID and password, it moves the code into being a web server acting as a wireless Access Point with the SSID `fithome_abc`.   An Access Point shows up within the Mac's/PC's list of wifi networks.
 
@@ -113,7 +175,7 @@ __TBD PICTURE__
 Each reading is formatted:  
 ```
 <Firebase referende>/readings/<monitor name>/<Unix Epoch timestamp>/
-{{"P": 1002.4}}
+{{"P": 1002.4,"I":12.2}}
 ```
 #### Getting the Timestamp
 The path to a power reading in the db includes the Unix Epoch timestamp.  To know what timestamp to use, we must:
@@ -175,42 +237,8 @@ time_diff = 946684800
 now_unix = now + time_diff
 now_unix_str = str(now_unix)
 ```
-_Note: we could multiply by 1000 to be in the same units as the Firebase timestamp (i.e.: ms).  However, we cannot find a reason to do this.  Since the monitor is the only hardware that doesn't use Unix epoch, it made sense to us to use Unix epoch without ms._
+_Note: we could multiply by 1000 to be in the same units as the Firebase timestamp (i.e.: ms).  However, we cannot find a reason to do this.  Since the monitor is the only hardware that doesn't use Unix epoch, it made sense to use Unix epoch without ms._
 
- # Preparing the ESP32
- At least for testing, we are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  For the IDE we are using [uPyCraft](http://docs.dfrobot.com/upycraft/).   
- # Install micropython
-- Plug the microprocessor into the Mac's USB port.
-- Open uPyCraft on the Mac.
-- Check Tools/Build from the menu and make sure ESP32 is checked.
-- Check Tools/Serial from the menu and select the SLAB_USBtoUART serial port.  When this is done, the >>> repl command prompt should be seen in the lower window.  
-- Go to Tools/BurnFirmware.    [This is the micropython build we currently use](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build).  This version of micropython is available within [the energy monitor firmware's GitHub repository](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build).  For ESP32 micropython firmware, the settings should be:  
-![micropython burn firmware dialog](images/EnergyMonitorFirmware/uPyCraft_burnimage_dialog.png)  
-Once the fields are filled in, click on OK.  This starts the erase and burn process.   
-- uPyCraft disconnects.  Once the microprocessor restarts, go ack to Tools/Select and choose the SLAB_USBtoUSART serial port. 
-## Copy micropython Libraries
-The libraries we use to connect to wifi and read/send energy readings include:
-  - [atm90e32_registers.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/read_monitor/atm90e32_registers.py) and [atm90e32_u.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/read_monitor/atm90e32_u.py) from workspace/read_monitor.
-  - [config.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/config/config.py) from workspace/config.
-  - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/join_wifi/wifi_connect.py) from workspace/join_wifi.
-  - [send_reading](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/send_reading/send_reading.py) from workspace/send_reading.
-  - [app_error.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/errors/app_error.py) from workspace/errors.
-  ### Steps
-  Within the uPyCraft IDE:  
-  - Make sure you are "talking" with micropython by checking if the repl >>> prompts are in the bottom window.
-  - create a lib file under the device folder.
-  - drag/drop each of the lib files from within the workspace folder to the lib directory under the device folder.
-  - drag/drop main.py to be under the device folder.
-  - create `config.json` and copy it to the lib directory.  The `config.json` file looks like:  
-  ```
-  {
-    "monitor":"bambi-07052019",
-    "project_id":"my-firebase-projectid-00989"
-}  
-```
-The monitor name is in the Database under the homeowner's member record.  
-![monitor name in db](images/Database/monitor_node.png) 
-  
-The monitor name is created when the homeowner becomes a FitHome member.  The conceptual model is a homeowner becomes a FitHome member for one month.  The homeowner uses the FitHome App to start their month of training.  During this process, one of the available monitors is assigned to the owner.  To uniquely identify this month of use, the monitor name assigned to the homeowner is appended with the date the homeowner signed up for FitHome membership.  In this example, the monitor named "bambi" was assigned to the homeowner.  The homeowner signed up on July 5th, 2019.
+ 
 
 
