@@ -64,32 +64,95 @@ There are a few "not ready for primetime" gotchas we found out about while testi
 # Preparing the ESP32
  At least for testing, we are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  
  # Install micropython
- [Sparkfun had a nice write up](https://learn.sparkfun.com/tutorials/how-to-load-micropython-on-a-microcontroller-board/esp32-thing).  The [micropython binary we used is v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)
+ The [micropython binary we used is v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)  
+
+ Steps: 
+ - Plug ESP32 into USB port.  
+ - Open a Terminal Window.  Easiest to open where the micropython binary is located.
+ - (Just to make sure...) Check to see the port's there, e.g.: `ls /dev/tty*
+ - Erase the chip: `esptool.py --chip esp32 -p /dev/tty.SLAB_USBtoUART erase_flash`  
+ e.g.:  
+ ```
+ $ esptool.py -p /dev/cu.SLAB_USBtoUART erase_flash
+esptool.py v2.7
+Serial port /dev/cu.SLAB_USBtoUART
+Connecting...
+Detecting chip type... ESP32
+Chip is ESP32D0WDQ5 (revision 1)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+MAC: bc:dd:c2:d4:58:78
+Uploading stub...
+Running stub...
+Stub running...
+Erasing flash (this may take a while)...
+Chip erase completed successfully in 9.6s
+Hard resetting via RTS pin...
+```  
+- Flash micropython: `esptool.py  -p /dev/cu.SLAB_USBtoUART write_flash -z 0x1000 esp32-20190529-v1.11.bin`  
+e.g.:  
+```
+$ esptool.py  -p /dev/tty.SLAB_USBtoUART write_flash -z 0x1000 esp32-20190529-v1.11.bin
+esptool.py v2.7
+Serial port /dev/tty.SLAB_USBtoUART
+Connecting........_
+Detecting chip type... ESP32
+Chip is ESP32D0WDQ5 (revision 1)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+MAC: bc:dd:c2:d4:58:78
+Uploading stub...
+Running stub...
+Stub running...
+Configuring flash size...
+Auto-detected Flash size: 4MB
+Compressed 1146864 bytes to 717504...
+Wrote 1146864 bytes (717504 compressed) at 0x00001000 in 63.4 seconds (effective 144.8 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
+```  
 
 ## Copy micropython Libraries
+
+- cd into the workspace dir of this project.  
+- start an rshell session: `$rshell`  
+- Connect to the ESP32:   
+```
+workspace>connect serial /dev/tty.SLAB_USBtoUART 115200
+Connecting to /dev/tty.SLAB_USBtoUART (buffer-size 512)...
+Trying to connect to REPL  connected
+Testing if sys.stdin.buffer exists ... Y
+Retrieving root directories ... /boot.py/
+Setting time ... Oct 10, 2019 09:34:23
+Evaluating board_name ... pyboard
+Retrieving time epoch ... Jan 01, 2000  
+```
+- Check that we're connected: `boards`  returns  
+```
+pyboard @ /dev/tty.SLAB_USBtoUART connected Epoch: 2000 Dirs: /boot.py /pyboard/boot.py  
+```  
+- Make lib directory: `mkdir /pyboard/lib`  
+- Copy libraries from Mac/PC, e.g.: `cp atm90_e32/atm90e32_registers.py /pyboard/lib`  
 The libraries we use to connect to wifi and read/send energy readings include:
   - [atm90e32_registers.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/read_monitor/atm90e32_registers.py) and [atm90e32_u.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/read_monitor/atm90e32_u.py) from workspace/read_monitor.
   - [config.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/config/config.py) from workspace/config.
   - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/join_wifi/wifi_connect.py) from workspace/join_wifi.
   - [send_reading](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/send_reading/send_reading.py) from workspace/send_reading.
   - [app_error.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/errors/app_error.py) from workspace/errors.
-  ### Steps
-  Within the uPyCraft IDE:  
-  - Make sure you are "talking" with micropython by checking if the repl >>> prompts are in the bottom window.
-  - create a lib file under the device folder.
-  - drag/drop each of the lib files from within the workspace folder to the lib directory under the device folder.
-  - drag/drop main.py to be under the device folder.
-  - create `config.json` and copy it to the lib directory.  The `config.json` file looks like:  
+  - Create `config.json` and copy it to the lib directory.  The `config.json` file looks like:  
   ```
   {
     "monitor":"bambi-07052019",
     "project_id":"my-firebase-projectid-00989"
-}  
-```
+ }  
+
+
 The monitor name is in the Database under the homeowner's member record.  
 ![monitor name in db](images/Database/monitor_node.png) 
   
-The monitor name is created when the homeowner becomes a FitHome member.  The conceptual model is a homeowner becomes a FitHome member for one month.  The homeowner uses the FitHome App to start their month of training.  During this process, one of the available monitors is assigned to the owner.  To uniquely identify this month of use, the monitor name assigned to the homeowner is appended with the date the homeowner signed up for FitHome membership.  In this example, the monitor named "bambi" was assigned to the homeowner.  The homeowner signed up on July 5th, 2019.
+The monitor name is created when the homeowner becomes a FitHome member.  The conceptual model is a homeowner becomes a FitHome member for one month.  The homeowner uses the FitHome App to start their month of training.  During this process, one of the available monitors is assigned to the owner.  To uniquely identify this month of use, the monitor name assigned to the homeowner is appended with the date the homeowner signed up for FitHome membership.  In this example, the monitor named "bambi" was assigned to the homeowner.  The homeowner signed up on July 5th, 2019.  
 
 # Software Design
 [main.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/main.py) gives us a general flow of the code.
@@ -157,14 +220,16 @@ Behind the scenes, the code in `wifi_connect.py` is using `<form action="configu
 `_handle_join_wifi()` takes care of adding the SSID and password into the config file in case the monitor's firmware needs it again.  It also connects to the network. _Note: We haven't spent time exploring this, but from what we can tell, the ESP32 stores the SSID and password somewhere (EEPROM? FLASH?).  It doesn't seem to access the variables from the config file, rather can just log in._
 ### Ongoing wifi
 Once the monitor knows the SSID and password, the monitor should be able to connect to the homeowner's wifi.
-## Sending Readings
+# Monitor Readings
 Reading the atm9e32 registers relies on the [ATM90e32 class](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/atm90_e32/atm90e32_u.py).  
-### Calibration 
+## Calibration 
 The trickiest part in getting quality readings from the atm90e32 is setting up the right calibration settings.  The settings we are using have been verified by testing to work with the 9V transformer and CTs (Current Transformers) we are using.  Check out [Circuit Setup's documentation](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter#calibration) if you are unsure if the calibration numbers will work with your hardware.
-### Initializing the ATM90e32 Class
+## Initializing the ATM90e32 Class
 We start by initializing an instance of the ATM90e32 twice with a time delay in between.  We have found that there are times when initializing only once fails to be able to send correct power readings.  We then go into a - hopefully - endless while True loop:
 - check the system status register to verify we can "talk" correctly with the atm90e32.
 - send a reading to the database.
+## Get Readings
+
 ### Send Readings
 The [SendReadings() class](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/send_reading/send_reading.py) handles sending power readings to the database.  Given how rich the atm90e32 readings are, there are many different readings we could send back.  We chose to send only power readings since these are the only ones we need to gain and provide insight on a homeowner's energy use.  
 
@@ -174,7 +239,7 @@ __TBD PICTURE__
 ***********************************
 Each reading is formatted:  
 ```
-<Firebase referende>/readings/<monitor name>/<Unix Epoch timestamp>/
+<Firebase reference>/readings/<monitor name>/<Unix Epoch timestamp>/
 {{"P": 1002.4,"I":12.2}}
 ```
 #### Getting the Timestamp
