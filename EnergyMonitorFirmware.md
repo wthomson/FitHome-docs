@@ -5,9 +5,10 @@ There is _so much_ prior work that made it easier to evolve the atm90e32 micropy
 * Tisham Dhar's [atm90e26 Arduino library](https://github.com/whatnick/ATM90E26_Arduino).    
 * The [atm90e26 Circuit Python library I wrote](https://github.com/BitKnitting/HappyDay_ATM90e26_CircuitPython).
 * Circuit Setup's [atm90e32 Arduino library](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter/tree/master/Software/libraries/ATM90E32).
-# What the Code Does
-We can write [Circuit Python](https://github.com/adafruit/circuitpython) instead of Arduino IDE to talk to the atm90e32. 
-Here's an [example](examples/CP_ATM90E32_Basic_SPI.py):  
+# What the Firmware Does
+The ESP32 is connected to [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/).  The micropython firmware: 
+- [main.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/main.py) reads the monitor and then sends the reading to a Firebase database project.
+- atm90e32_u.py and atm90e32_registers.py [at this GitHub](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/workspace/atm90_e32) are thehe libraries called to read and write to the monitor's registers.
 
 # Overview
 The energy monitor firmware is built on micropython to:
@@ -29,6 +30,10 @@ In addition to SPI wiring, a red and green led - each with a resistor - are wire
 - red LED on pin 27
 - green LED on pin 32
 The resistors are between 220 and 1K ohm.
+# Powering Up
+--------------------->  
+Hmmm....a gotcha we haven't debugged yet....In order for the ESP32 to get past boot, the ESP32 __must__ be plugged in __before__ the monitor is plugged in.  
+<---------------------
 ## Software 
 - OS: [micropython v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)
 - IDE: [uPyCraft](http://docs.dfrobot.com/upycraft/).  I started with uPyCraft.  Then modifying a file, copying to the ESP32 started having too many issues (we can't wait for true USB!).  So we started using [rshell](https://pypi.org/project/rshell/).  
@@ -54,6 +59,8 @@ Retrieving time epoch ... Jan 01, 2000
 ```
 
 #### uPyCraftism
+_Note: We've given up on uPyCraft. We now stick with rshell_  
+  
 __IMPORTANT__: uPyCraft has a folder in it called _workspace_.  This folder is mapped (mounted) to a directory on the Mac's/PC's hard drive.  This is why the firmware starts below the _workspace_ folder.  This folder needs to be mapped to uPyCraft's folder.  These are the steps we took:
 - Choose Tools/InitConfig  You'll be asked if you want to init. Choose yes.  
 - Click on the workspace folder.  This brings up a Finder dialog box.  Choose the energy_monitor_firmware directory.
@@ -223,7 +230,40 @@ Once the monitor knows the SSID and password, the monitor should be able to conn
 # Monitor Readings
 Reading the atm9e32 registers relies on the [ATM90e32 class](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/atm90_e32/atm90e32_u.py).  
 ## Calibration 
-The trickiest part in getting quality readings from the atm90e32 is setting up the right calibration settings.  The settings we are using have been verified by testing to work with the 9V transformer and CTs (Current Transformers) we are using.  Check out [Circuit Setup's documentation](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter#calibration) if you are unsure if the calibration numbers will work with your hardware.
+The code in main.py shows several values being passed into the initialization of at atm90e32 instance:  
+```
+
+
+ATM90e32(lineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2)
+ ```
+The default values are discussed in [Circuit Setup's documentation](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter#calibration).  
+
+We use the default values for:  
+```
+lineFreq = 4485  # 4485 for 60 Hz (North America)
+PGAGain = 21     # 21 for 100A (2x), 42 for >100A (4x)
+```
+What is left to calibrate are the voltage and current gain values.  These are important, because they can cause havoc with the accuracy of the voltage, current, power readings.
+
+It is more likely the voltage readings will need calibration than the current.  
+### Voltage Calibration
+The gain value is tied to the transformer we are using.  We decided to standardize on the [Jameco 9V power supply, part no. 157041](https://www.jameco.com/shop/ProductDisplay?catalogId=10001&langId=-1&storeId=10001&productId=157041).  The default voltage gain for a 9V AC transformer was 42080.  With this setting for voltage gain, our readings were over 15 watts higher than what the actual voltage was.  
+
+To determine the actual voltage, we used the extremely useful [Kill-A-Watt](https://amzn.to/2Mcjkt7).
+
+To calibrate the voltage gain, we used the formula/info in [the app note](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/docs/Atmel-46103-SE-M90E32AS-ApplicationNote.pdf) _see section 4.2.6 Voltage/Current Measurement Calibration where it discusses using existing voltage gain_
+
+where:
+- reference voltage = reading from Kill-A-Watt
+- voltage measurement value = the reading for voltage we got from initializing the atm90e32 instance with the voltage gain value set at 42080 and then getting the propery `line_voltageA`.
+- the current voltage gain is 42080.
+
+Calculate the value, and change the `VoltageGain` to the calculated value.
+### Current Calibration
+We found the default current gain gave current readings close to what we got with the Kill-A-Watt.  Because it was easy to do so, we set the `CurrentGainCT1` and `CurrentGainCT2` values to our calculation, using the current readings in place of the voltage readings as discussed in the app note.
+
+
+
 ## Initializing the ATM90e32 Class
 We start by initializing an instance of the ATM90e32 twice with a time delay in between.  We have found that there are times when initializing only once fails to be able to send correct power readings.  We then go into a - hopefully - endless while True loop:
 - check the system status register to verify we can "talk" correctly with the atm90e32.
