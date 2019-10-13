@@ -1,5 +1,5 @@
 # PlugE
-The purpose of the PlugE project is to collect energy readings from [TP-Link HS110 Smart Plug](https://amzn.to/2MFSVmH) and send them to a Firebase database project.
+The purpose of the PlugE project is to collect energy readings from [TP-Link HS110 Smart Plugs](https://amzn.to/2MFSVmH) and send them to a Firebase database project.
 # Hardware/Software
 - [TP-LINK HS110](https://smile.amazon.com/gp/product/B0178IC5ZY/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)
 - [GadfetReactor pyHS100](https://github.com/GadgetReactor/pyHS100) Python Library 
