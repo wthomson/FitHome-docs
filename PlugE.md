@@ -1,3 +1,17 @@
+# PlugE
+The purpose of the PlugE project is to collect energy readings from [TP-Link HS110 Smart Plug](https://amzn.to/2MFSVmH) and send them to a Firebase database project.
+# Hardware/Software
+- [TP-LINK HS110](https://smile.amazon.com/gp/product/B0178IC5ZY/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)
+- [GadfetReactor pyHS100](https://github.com/GadgetReactor/pyHS100) Python Library 
+- [Raspberry Pi](RaspPi.md)
+# Server
+The RaspPi Server runs in the homeowner's house.
+- __Set IP address (TBD)__
+## Flask
+- Discover plugs
+- rename a plug
+- get Homeowner's monitor name.  Needed for writing readings to Firebase.
+- Write power and current readings to Firebase in "right place"
 We're using a Rasp Pi v3 B+
 # Installation
 - Put the micro-SD [e.g.: cheap one on Amazon](https://www.amazon.com/gp/product/B004ZIENBA/ref=as_li_ss_tl?ie=UTF8&psc=1&linkCode=sl1&tag=bitknittingwo-20&linkId=923f12067ad3395ed04f043c37d8c39f)  that will hold the Rasp Pi image into an SD Card reader (on our Mac).
@@ -23,7 +37,7 @@ These steps are covered on this [web page](https://itsfoss.com/ssh-into-raspberr
 ### Mount Drive
 - Install [SSHFS](https://osxfuse.github.io/). 
 - Create a directory to mount to (e.g.: `/users/mj/mount`).
-= Open a terminal window and run (replace the raspPi IP address) `sshfs pi@192.168.86.209: /users/mj/mount`
+= Open a terminal window and run (replace the raspPi IP address and mount point) `sshfs pi@192.168.86.209: /users/mj/mount`
 #### Unmount
 Sometimes the mount gets into a state of limbo.  When that happens, this command seems to work: `sudo umount -f /users/mj/mount`.
 # Update Python Stuff
@@ -40,8 +54,13 @@ Our project -PlugE-gets energy readings from the [TP-Link HS110 Smart Plug](http
 - Note python being used `which python` (should be venv)
 # Copy Library
 - Copy directory `pyHS100` from [GitHub](https://github.com/GadgetReactor/pyHS100)
+# Open VS Code
+We use VS Code for our editor.  After using SSHFS to mount the Rasp Pi directory into our filesystem, we go into the projects directory we created (`/home/pi/projects`), and opened the PlugE directory within VS Code.  This way, we can edit/save in VS Code.
+# Running Code
+We run all code within the venv on the Rasp Pi.  To run repl, we first activate the virtual environment: `pi@raspberrypi:~/projects/PlugE $ source venv/bin/activate`  
+  
 # Try Simple stuff
-On command line, start a python session `$python3`.  This starts up REPL
+On command line, start a python session: `$python3`.  This starts up REPL
 ```
 >>> import pyHS100
 >>> from pyHS100 import Discover
@@ -57,3 +76,7 @@ On command line, start a python session `$python3`.  This starts up REPL
 Current consumption: {'current': 15.947763, 'voltage': 115.332946, 'power': 1790.277694, 'total': 0.008}
 ```
 _Note: Not sure what `total` is?_
+# Plugs library
+We created [plugs.py](https://github.com/BitKnitting/FitHome_PlugE/blob/master/PlugE/plugs.py) to focus on our requirement to continually get readings from the HS110 and send these readings to a Firebase Project.
+# Flask Service
+[app.py](https://github.com/BitKnitting/FitHome_PlugE/blob/master/PlugE/app.py) is our Flask app.
