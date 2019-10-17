@@ -1,4 +1,6 @@
 # PlugE
+This project is called PlugE because of it's focus around the TP-Link HS110 Smart Plug.
+
 The purpose of the PlugE project is to collect energy readings from [TP-Link HS110 Smart Plugs](https://amzn.to/2MFSVmH) and send them to a Firebase database project.
 # Hardware/Software
 - [TP-LINK HS110](https://smile.amazon.com/gp/product/B0178IC5ZY/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)
