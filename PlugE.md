@@ -9,8 +9,10 @@ The purpose of the PlugE project is to collect energy readings from [TP-Link HS1
 # Server
 The RaspPi Server runs in the homeowner's house.
 - __Set IP address (TBD)__
-
-# Installation
+# TP-Link HS110 Installation 
+Follow [these instructions](https://www.tp-link.com/us/support/faq/946/).
+- 
+# Rasp Pi Installation
 - Put the micro-SD [e.g.: cheap one on Amazon](https://www.amazon.com/gp/product/B004ZIENBA/ref=as_li_ss_tl?ie=UTF8&psc=1&linkCode=sl1&tag=bitknittingwo-20&linkId=923f12067ad3395ed04f043c37d8c39f)  that will hold the Rasp Pi image into an SD Card reader (on our Mac).
 - Format using SD-Formatter.
 - Download a [Rasp Pi image](https://www.raspberrypi.org/downloads/raspbian/)
@@ -117,5 +119,7 @@ PlugE.service - Collect and send power readings.
  Main PID: 2813 (code=exited, status=1/FAILURE)
  ```  
  Check the debug records with `journalctl _PID=2813` = where the PID comes from the Main PID.  This shows `ModuleNotFoundError: No module named 'deprecation'`.  This error is occuring because the deprecation library was PIP'd for the virtual environment.  To fix this, we exected the virtual environment (`$deactivate`) and `pip3 install deprecation`.  We were then able to start the PlugE.service and verified by looking at the status.
+ ## Changes to Code and Systemd
+ Changes made to the systemd service (in this case the Python code), requires the command `systemctl daemon-reload` to make systemd aware of the changes.  This is followed by `systemctl restart PlugE.service`.
  ## List All Services
  ```systemctl list-units | grep .service``` - lists all the current services running.
