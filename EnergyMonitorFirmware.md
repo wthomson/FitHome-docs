@@ -255,8 +255,16 @@ To calibrate the voltage gain, we used the formula/info in [the app note](https:
 
 where:
 - reference voltage = reading from Kill-A-Watt
-- voltage measurement value = the reading for voltage we got from initializing the atm90e32 instance with the voltage gain value set at 42080 and then getting the propery `line_voltageA`.
-- the current voltage gain is 42080.
+- voltage measurement value = the reading for voltage we got from initializing the atm90e32 instance with the voltage gain value and reading the `line_voltageA` property.
+
+new `VoltageGain` = reference voltage/voltage measurement * current voltage gain
+
+e.g. using a different 9V transformer:
+- Kill-A-Watt shows V = 121.5
+- reading shows voltage at 117.5
+- current `VoltageGain` is 36650
+
+new `Voltage Gain = 121.5/117.5*36650 = 37898`
 
 Calculate the value, and change the `VoltageGain` to the calculated value.
 ### Current Calibration
@@ -274,9 +282,7 @@ We start by initializing an instance of the ATM90e32 twice with a time delay in 
 The [SendReadings() class](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/send_reading/send_reading.py) handles sending power readings to the database.  Given how rich the atm90e32 readings are, there are many different readings we could send back.  We chose to send only power readings since these are the only ones we need to gain and provide insight on a homeowner's energy use.  
 
 The SendReadings() class uses the REST PUT API to send power readings to the FitHome db.  We are currently using Firebase RT.  
-***********************************
-__TBD PICTURE__
-***********************************
+  
 Each reading is formatted:  
 ```
 <Firebase reference>/readings/<monitor name>/<Unix Epoch timestamp>/
