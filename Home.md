@@ -1,9 +1,20 @@
 # Welcome
 Welcome to the FitHome Wiki. 
-# What FitHome Is
-The FitHome experience reads a homeowner's electricity use and sends these readings to an AI model that gives the busy homeowner easy, personalized tasks they can do to save electricity.  After one month of participating in the FitHome experience, the busy homeowner will change their use of electricity to consistantly use at least 15% less electricity.
-# Audience
-These pages are primarily intended to document the FitHome system to the developer:
-- FitHome app - written in Flutter for iOS and Android Smarthome.  
-- energy monitor - based on John's energy monitor 
-- the database- the intersection between the homeowners, FitHome helpers, electricians.
+# The FitHome Experience
+The FitHome experience runs for one month within a home.  The experience reads a homeowner's electricity use and sends these readings to a database that is read by our FitHome Analysis service.  The FitHome Analysis service learns about a homeowner's electricity use.  The Analysis service studies the power and current sample to optimize personal electricity savings insights.  These insights are displayed by the FitHome Smartphone app.  The Smartphone app will let the homeowner quickly know how much electricity they are using.  The app will also provide personalized insight and guidance that makes it easy for a busy homeowner to save at least 15% of their electricity use.
+# High Level System Components
+![overview](images/Overview/Overview.png)
+## (A and B) Electricity Monitors to DB
+The electricity monitoring hardware includes:
+- An [electricity monitor](ElectricityMonitor.md) within a homeowner's breaker box.  
+- A [PlugE device](PlugE.md) within the home.
+- One or more [TP-Link HS110 Smart Plugs](https://amzn.to/2MFSVmH). 
+  
+The readings are sent by the electricity monitor and the PlugE device to a Firebase RT db (B).  
+## (C) Analysis
+A backend service scoops up the electricity readings.  It uses data analytics and deep learning to provide personalized insights to the homeowner.
+## (D) FitHome App
+The [FitHome App](FitHomeAppExperienceFlow.md) gives the busy homeowner insights into how to quickly and painlessly lower the amount of electricity they use.  As they lower their use, they see the financial and climate change impact they are making.
+
+
+

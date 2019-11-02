@@ -1,5 +1,12 @@
 ### GitHub Location
 [energy monitor firmware GitHub repository](https://github.com/BitKnitting/energy_monitor_firmware)
+# The Electricity Monitor
+The whole home electricity monitor we use to gather power and current readings consists of:
+- [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/).  
+- an ESP32.
+
+![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png) 
+
 # Thanks to Those That Went Before
 There is _so much_ prior work that made it easier to evolve the atm90e32 micropython library.  Efforts include:  
 * Tisham Dhar's [atm90e26 Arduino library](https://github.com/whatnick/ATM90E26_Arduino).    
@@ -25,7 +32,7 @@ miso_pin = Pin(12)
 sck_pin = Pin(14)
 cs_pin = 15
 ```
-![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png)  
+ 
 In addition to SPI wiring, a red and green led - each with a resistor - are wired:
 - red LED on pin 27
 - green LED on pin 32

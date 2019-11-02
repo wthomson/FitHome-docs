@@ -3,7 +3,7 @@ This project is called PlugE because of it's focus around the TP-Link HS110 Smar
 
 The purpose of the PlugE project is to collect energy readings from [TP-Link HS110 Smart Plugs](https://amzn.to/2MFSVmH) and send them to a Firebase database project.
 # Hardware/Software
-- [TP-LINK HS110](https://smile.amazon.com/gp/product/B0178IC5ZY/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)
+- [TP-LINK HS110](https://amzn.to/2WBHPUc)
 - [GadfetReactor pyHS100](https://github.com/GadgetReactor/pyHS100) Python Library 
 - [Raspberry Pi](RaspPi.md)
 # Server
@@ -16,7 +16,7 @@ Follow [these instructions](https://www.tp-link.com/us/support/faq/946/).
 - Put the micro-SD [e.g.: cheap one on Amazon](https://www.amazon.com/gp/product/B004ZIENBA/ref=as_li_ss_tl?ie=UTF8&psc=1&linkCode=sl1&tag=bitknittingwo-20&linkId=923f12067ad3395ed04f043c37d8c39f)  that will hold the Rasp Pi image into an SD Card reader (on our Mac).
 - Format using SD-Formatter.
 - Download a [Rasp Pi image](https://www.raspberrypi.org/downloads/raspbian/)
-- Run [Etcher] to copy the image onto the SD Card.
+- Run Etcher to copy the image onto the SD Card.
 - Add "SSH" file to the root of the image.  We do this by opening a terminal on the boot partition and typing `$touch ssh` 
 - Create the `wpa_supplicant.conf` file and copy to the root of the image.  We used [the step 4 guide in this post](https://desertbot.io/blog/headless-raspberry-pi-3-bplus-ssh-wifi-setup).
 - Put the SD-micro into the Rasp-Pi's micro-SD port
