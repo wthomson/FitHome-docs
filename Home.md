@@ -2,8 +2,7 @@
  
   
 Welcome to the FitHome Wiki. Think of the FitHome experience as a home health Personal Trainer for the busy homeowner. During a one month training period, the homeowner gets personalized, simple guidance on the easiest way to lower electricity consumption by at least 15%. The homeowner receives immediate feedback, including the amount of money you are saving and your impact on helping to minimize climate change. It's amazing how much electricity we waste yet don't have any idea how we can use less with no change to our lifestyle. Saving electricity means saving money and making a positive impact on climate change. The FitHome Experience gets us mindful and connected to a future that is reliant on renewable energy.
-# The FitHome Experience
-The FitHome experience runs for one month within a home.  The experience reads a homeowner's electricity use and sends these readings to a database that is read by our FitHome Analysis service.  The FitHome Analysis service learns about a homeowner's electricity use.  The Analysis service studies the power and current sample to optimize personal electricity savings insights.  These insights are displayed by the FitHome Smartphone app.  The Smartphone app will let the homeowner quickly know how much electricity they are using.  The app will also provide personalized insight and guidance that makes it easy for a busy homeowner to save at least 15% of their electricity use.
+
 # High Level System Components
 ![overview](images/Overview/Overview.png)
 ## (A and B) Electricity Monitors to DB
