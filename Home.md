@@ -17,7 +17,10 @@ The electricity monitoring hardware includes:
 - One or more [TP-Link HS110 Smart Plugs](https://amzn.to/2MFSVmH). 
   
 ## (C) Analysis
-A backend service scoops up the electricity readings.  It uses data analytics and deep learning to provide personalized insights to the homeowner.
+A backend service scoops up the electricity readings.  It uses data analytics and deep learning to provide personalized insights to the homeowner.  
+  
+We're figuring out what we want to do using colab.  Once we have a clue, we'll implement results on the Rasp Pi to localize computation.  
+- [Amount of electricity leaks](https://github.com/BitKnitting/FitHome_Analysis/blob/master/notebooks/Baseline.ipynb) _Note: Some times the notebook link won't open to a notebook in GitHub._
 ## (D) FitHome App
 The [FitHome App](https://github.com/BitKnitting/FitHome/wiki/FitHomeAppExperienceFlow) gives the busy homeowner insights into how to quickly and painlessly lower the amount of electricity they use.  We wrote the app in Flutter so that it would run on both iPhone and iOS devices.
 ### The Impact Screen
