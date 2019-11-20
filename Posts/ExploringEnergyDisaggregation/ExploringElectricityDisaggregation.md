@@ -2,7 +2,7 @@ November 19th, 2019
 
 # Exploring Energy Disaggregation
 Wouldn't it be terrific if we can show the homeowner how and when their appliances are slurping up electricity?  
-![Bridgely](/images/ExploringDisaggregation/BridgelyApplianceDissagregation.png)  
+![Bridgely](images/ExploringDisaggregation/BridgelyApplianceDissagregation.png)  
   
 _From a [Bridgely White Paper](https://www.bidgely.com/wp-content/uploads/2016/04/White_Paper_Savings__Engagement_v2_Case_Study.pdf)_
 
