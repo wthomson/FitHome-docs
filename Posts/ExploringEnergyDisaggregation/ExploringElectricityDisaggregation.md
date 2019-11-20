@@ -22,18 +22,22 @@ We have an electricity readings that consist of a bunch of appliances being on (
   
 ![power readings](images/ExploringDisaggregation/aggregate_power_3_hours.png)  
   
-<p align="center">A Few Hours of Power Readings</p> 
+A Few Hours of Power Readings
   
 ![current readings](images/ExploringDisaggregation/aggregate_current_3_hours.png)  
   
-<p align="center">A Few Hours of Current Readings</p>  
+A Few Hours of Current Readings
 
 ![powercurrent readings](images/ExploringDisaggregation/aggregate_power_current_3_hours.png)    
   
-<p align="center">A Few Hours of Current and Power Readings</p>  
+A Few Hours of Current and Power Readings
+
+
+#The Plan  
   
-#The Plan
-![XKCD](images/ExploringDisaggregation/XKCD_machine_learning.png)
+![XKCD](images/ExploringDisaggregation/XKCD_machine_learning.png)  
+  
+https://xkcd.com/1838/
 
 
 
