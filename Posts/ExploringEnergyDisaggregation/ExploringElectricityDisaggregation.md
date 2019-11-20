@@ -18,8 +18,8 @@ __can we build a Deep Learning model that takes future aggregated electricity re
 
 We're hoping the answer to this question follows the sentiment of the NY,NY song..._if I can make it there I can make it anywhere_...
 # A Bothering Question
-We have:
-- aggregated (whole house) data in which readings mask what appliance is on because several appliances are on at the same time. It reminds us of a restaurant where we strain to hear what is being said.  Yet we can figure out what really loud folks are saying at other tables!  
+We have an electricity readings that consist of a bunch of appliances being on (or off) at the same time and some noise.  Yet in this cacophony, how the heck to we figure out when the microwave was on and for how long?  
+  
 ![power readings](images/ExploringDisaggregation/aggregate_power_3_hours.png)  
   
 <p align="center">A Few Hours of Power Readings</p> 
