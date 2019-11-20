@@ -20,17 +20,17 @@ We're hoping the answer to this question follows the sentiment of the NY,NY song
 # A Bothering Question
 We have:
 - aggregated (whole house) data in which readings mask what appliance is on because several appliances are on at the same time. It reminds us of a restaurant where we strain to hear what is being said.  Yet we can figure out what really loud folks are saying at other tables!  
-![power readings for 10/20/2019](aggregate_power_3_hours.png)  
+![power readings](images/ExploringDisaggregation/aggregate_power_3_hours.png)  
   
 <p align="center">A Few Hours of Power Readings</p> 
   
-![current readings for 10/20/2019](aggregate_current_3_hours.png)  
+![current readings](images/ExploringDisaggregation/aggregate_current_3_hours.png)  
   
 <p align="center">A Few Hours of Current Readings</p>  
 
-![powercurrent readings for 10/20/2019](aggregate_power_current_3_hours.png)    
+![powercurrent readings](images/ExploringDisaggregation/aggregate_power_current_3_hours.png)    
   
-<p align="center">A Few Hours of Current and Power</p>
+<p align="center">A Few Hours of Current and Power Readings</p>
 
 
 
