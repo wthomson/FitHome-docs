@@ -33,7 +33,7 @@ A Few Hours of Current Readings
 A Few Hours of Current and Power Readings
 
 
-#The Plan  
+# The Plan  
   
 ![XKCD](images/ExploringDisaggregation/XKCD_machine_learning.png)  
   
