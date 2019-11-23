@@ -45,7 +45,7 @@ Hmmm....a gotcha we haven't debugged yet....In order for the ESP32 to get past b
 - OS: [micropython v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)
 - IDE: [uPyCraft](http://docs.dfrobot.com/upycraft/).  I started with uPyCraft.  Then modifying a file, copying to the ESP32 started having too many issues (we can't wait for true USB!).  So we started using [rshell](https://pypi.org/project/rshell/).  
 #### rshell
-rshell has great documentation.  We start a Terminal within the workspace folder of the project.  From within rshell we can go between repl and copying files from our Mac to the ESP32.
+rshell has great documentation.  if rshell isn't installed, run `sudo pip3 install rshell`.   We start a Terminal within the workspace folder of the project.  From within rshell we can go between repl and copying files from our Mac to the ESP32.
 - get into rshell:
 ```
 $ rshell

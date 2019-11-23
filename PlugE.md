@@ -18,21 +18,41 @@ Follow [these instructions](https://www.tp-link.com/us/support/faq/946/).
 - Download a [Rasp Pi image](https://www.raspberrypi.org/downloads/raspbian/)
 - Run Etcher to copy the image onto the SD Card.
 - Add "SSH" file to the root of the image.  We do this by opening a terminal on the boot partition and typing `$touch ssh` 
-- Create the `wpa_supplicant.conf` file and copy to the root of the image.  We used [the step 4 guide in this post](https://desertbot.io/blog/headless-raspberry-pi-3-bplus-ssh-wifi-setup).
-- Put the SD-micro into the Rasp-Pi's micro-SD port
+- Create the `wpa_supplicant.conf` file : `$touch wpa_supplicant.conf`.  Copy the contents into the file `nano wpa_supplicant.conf`:  
+```
+country=US
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+    ssid="YOURSSID"
+    psk="YOURPWD"
+}
+```
+Changing the ssid and psk to match your network.
+- 'safely' remove the SD-card.
+- Put the SD-card into the Rasp-Pi's micro-SD port
 - Power up the Rasp Pi.  Hopefully wireless is working!
-## Update
+
+# Headless Config
+## Connect to Rasp Pi
+These steps are covered on this [web page](https://itsfoss.com/ssh-into-raspberry/).  
+
+- Figure out the local net our Rasp-Pi is on.
+  - Get our local IP address: `ifconfig | grep inet`.  This command gives us:  
+    
+```
+inet 192.168.86.233 netmask 0xffffff00 broadcast 192.168.86.255
+inet 192.168.2.1 netmask 0xffffff00 broadcast 192.168.2.255
+```
+   192.168.2.1 is the [IP address of a router in a home network](https://192-168-1-1ip.mobi/192-168-2-1/).  This means the Rasp-Pi is on 192.168.86.
+- Discover Rasp Pi's local IP using Angry IP by scanning 192.168.86.0 to 192.168.86.255.  e.g.: The local IP address on ours was `192.168.86.209`
+- ssh e.g.: `ssh pi@192.168.86.209`
+- The initial username is `pi` and the initial password is `raspberry`
+### Update
 Blindly following recommendations,
 - `sudo apt-get update`   
 - `sudo apt-get upgrade`
-# Headless Config
-## Connect to Rasp Pi
-These steps are covered on this [web page](https://itsfoss.com/ssh-into-raspberry/)
-- Figure out the local IP of the Rasp Pi.  We used:
-- Get our local IP address: `ifconfig | grep inet`
-- Discover Rasp Pi's local IP using Angry IP.  e.g.: The local IP address on ours was `192.168.86.209`
-- ssh e.g.: `ssh pi@192.168.86.209`
-- The initial username is `pi` and the initial password is `raspberry`
 ### Mount Drive
 - Install [SSHFS](https://osxfuse.github.io/). 
 - Create a directory to mount to (e.g.: `/users/mj/mount`).
