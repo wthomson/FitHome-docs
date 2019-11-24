@@ -14,3 +14,5 @@ Data Analysis
 - [Leaks Analysis](https://github.com/BitKnitting/FitHome/wiki/LeaksAnalysis)  
 - Appliance Use/Detection....
 - [Exploring Energy Disaggregation](https://github.com/BitKnitting/FitHome/wiki/ExploringElectricityDisaggregation)
+  
+[Rasp Pi](https://github.com/BitKnitting/FitHome/wiki/RaspPi)
