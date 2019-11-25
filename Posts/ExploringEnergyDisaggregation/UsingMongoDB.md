@@ -1,6 +1,8 @@
 
+# GitHub location
+I run git on my Rasp Pi to push changes to the [RaspPi_mongodb](https://github.com/BitKnitting/RaspPi_mongodb) project.
 # Installation
-Installing on a Rasp Pi configured as discussed in the [PlugE post](PlugE.md)
+Installing on a Rasp Pi configured as discussed in the [PlugE post](../../PlugE.md)
 ```
 sudo apt install mongodb
 sudo systemctl enable mongodb

@@ -6,6 +6,30 @@ The purpose of the PlugE project is to collect energy readings from [TP-Link HS1
 - [TP-LINK HS110](https://amzn.to/2WBHPUc)
 - [GadfetReactor pyHS100](https://github.com/GadgetReactor/pyHS100) Python Library 
 - [Raspberry Pi](RaspPi.md)
+# Clone and Start Swimming around
+- Clone the [FitHome_PlugE](https://github.com/BitKnitting/FitHome_PlugE) project onto the Rasp Pi.
+- cd into `FitHome_PlugE/PlugE`
+- install a venv (_Note: if you haven't already, you'll need `$ sudo apt-get install python3-venv` AND THEN you might need to change directory/file perms, e.g.:  '$ sudo chmod -R o+rwx <directory name>_), eg.:
+```
+$ python3 -m venv venv --prompt PlugE
+```
+- Activate the PlugE venv: `$ source venv/bin/activate`
+_Notice the prompt:_ `(PlugE) pi@raspberrypi:~/projects/FitHome_PlugE/PlugE $`
+- Add packages: `pip3 install -r requirements.txt`
+## Just Keep Swimming...
+- Start Playing around:
+```
+$ python3
+>>> from plugs_lib import Plugs
+>>> p = Plugs()
+>>> p.plugs()
+[{'192.168.86.226': <SmartPlug model HS110(US) at 192.168.86.226 (M_Computer), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 43, 842656)}>, '192.168.86.227': <SmartPlug model HS110(US) at 192.168.86.227 (microwave), is_on: True - dev specific: {'LED state': False, 'On since': datetime.datetime(2019, 11, 16, 0, 47, 48, 859669)}>, '192.168.86.220': <SmartPlug model HS110(US) at 192.168.86.220 (Entertainment), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 42, 879731)}>}, {'192.168.86.226': <SmartPlug model HS110(US) at 192.168.86.226 (M_Computer), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 43, 880244)}>, '192.168.86.227': <SmartPlug model HS110(US) at 192.168.86.227 (microwave), is_on: True - dev specific: {'LED state': False, 'On since': datetime.datetime(2019, 11, 16, 0, 47, 48, 880660)}>, '192.168.86.220': <SmartPlug model HS110(US) at 192.168.86.220 (Entertainment), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 42, 881064)}>}, {'192.168.86.226': <SmartPlug model HS110(US) at 192.168.86.226 (M_Computer), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 43, 881480)}>, '192.168.86.227': <SmartPlug model HS110(US) at 192.168.86.227 (microwave), is_on: True - dev specific: {'LED state': False, 'On since': datetime.datetime(2019, 11, 16, 0, 47, 48, 881882)}>, '192.168.86.220': <SmartPlug model HS110(US) at 192.168.86.220 (Entertainment), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 42, 882282)}>}]
+>>> p.plugs[0]
+{'192.168.86.226': <SmartPlug model HS110(US) at 192.168.86.226 (M_Computer), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 43, 681423)}>, '192.168.86.227': <SmartPlug model HS110(US) at 192.168.86.227 (microwave), is_on: True - dev specific: {'LED state': False, 'On since': datetime.datetime(2019, 11, 16, 0, 47, 48, 699783)}>, '192.168.86.220': <SmartPlug model HS110(US) at 192.168.86.220 (Entertainment), is_on: True - dev specific: {'LED state': True, 'On since': datetime.datetime(2019, 10, 29, 18, 15, 42, 721373)}>}
+>>> p.plugs[0]['192.168.86.226'].get_emeter_realtime()
+{'current': 1.634064, 'voltage': 122.876795, 'power': 190.894978, 'total': 28.73}
+```
+See [RTD Virtual Environments and Packages](https://docs.python.org/3/tutorial/venv.html).
 # Server
 The RaspPi Server runs in the homeowner's house.
 - __Set IP address (TBD)__
@@ -17,13 +41,14 @@ Seen[our Rasp Pi page](RaspPi.md)
 # Create Project
 Our project -PlugE-gets energy readings from the [TP-Link HS110 Smart Plug](https://smile.amazon.com/gp/product/B0178IC5ZY/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)
 - Create the `pi@raspberrypi:~/projects/PlugE` directory.
-- Create a venv `python3  -m venv venv --prompt PlugE`
+- Create a venv `sudo python3  -m venv venv --prompt PlugE`
 - Activate the venv `source venv/bin/activate`
 - Note python being used `which python` (should be venv)
 # Copy Library
 - Copy directory `pyHS100` from [GitHub](https://github.com/GadgetReactor/pyHS100)
 # Open VS Code
 We use VS Code for our editor.  After using SSHFS to mount the Rasp Pi directory into our filesystem, we go into the projects directory we created (`/home/pi/projects`), and opened the PlugE directory within VS Code.  This way, we can edit/save in VS Code.
+
 # Environment Variables
 We create environment variables for:
 * the path to the python libraries

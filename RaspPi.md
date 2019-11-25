@@ -44,13 +44,28 @@ Blindly following recommendations,
 ### Mount Drive
 - Install [SSHFS](https://osxfuse.github.io/). 
 - Create a directory to mount to (e.g.: `/users/mj/mount`).
-= Open a terminal window and run (replace the raspPi IP address and mount point) `sshfs pi@192.168.86.209: /users/mj/mount`
+- Open a terminal window and run (replace the raspPi IP address and mount point) `sshfs pi@192.168.86.209: /users/mj/mount`
 #### Unmount
 Sometimes the mount gets into a state of limbo.  When that happens, this command seems to work: `sudo umount -f /users/mj/mount`.
 # Update Python Stuff
 `python3 --version` shows the version of python 3 is 3.7.3.
 - Install venv `sudo apt-get install python3-venv`
-- Get the python3 version of pip `sudo apt-get install python3-pip`
+- The python-dotenv is we're using flask.  It picks up environment variables from .flaskenv and .env... `pip3 install python-dotenv`
+
+## Install MongoDB
+If using mongodb:  
+```
+sudo apt install mongodb
+sudo systemctl enable mongodb
+```
+- We "downgraded" to this version of pymongo. `pip3 install pymongo==3.4.0`
+__NOTE: We needed to use this version of pymongo.  If not, we'd get an error:__
+```
+An error occurred: Server at localhost:27017 reports wire version 0, but this version of PyMongo requires at least 2
+(MongoDB 2.6).
+```
+There's [more on mongodb in this post](Posts/UsingMongoDB.md)
+# Onwards...
 
 The `/home/pi` directory of the RaspPi will be mounted as a drive in Finder.
 # OOPS - Can't get to Rasp Pi
