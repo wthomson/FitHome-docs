@@ -1,6 +1,6 @@
 
 # GitHub location
-I run git on my Rasp Pi to push changes to the [RaspPi_mongodb](https://github.com/BitKnitting/RaspPi_mongodb) project.
+I run git on my Rasp Pi to push changes to the [FitHome_mongodb](https://github.com/BitKnitting/FitHome_mongodb) project.
 # Installation
 Installing on a Rasp Pi configured as discussed in the [PlugE post](../../PlugE.md)
 ```
@@ -8,6 +8,9 @@ sudo apt install mongodb
 sudo systemctl enable mongodb
 ```
 _Note: [In a previous project, I wrote up what I learned about systemctl](https://github.com/BitKnitting/should_I_water/wiki/systemd-services)
+## OOPS!
+In the _Don't let this happen to you category..._ xThrough blindly following someone's ideas on Rasp Pi + MongoDB + remote access, I ended up not being able to connect via wifi to our Rasp Pi.  After a few hours bumbling about on this, we ended up copying the files off the SD-Card and starting the install again.  How to get the files off the SD-Card is covered [here](../../RaspPi.md).
+# mongodb command line
 I was not able to get into mongo with `$mongo`  I would get the error `Error: couldn't connect to server 127.0.0.1:27017 at src/mongo/shell/mongo.js:145`.  The error resolved when I:  
   
 ```
@@ -16,26 +19,20 @@ sudo service mongodb restart
 ```
 I could then try [the simple example given on this blog post](https://thedatafrog.com/mongodb-remote-raspberry-pi/). 
 
-## Project Directory  
-```
-pi@raspberrypi:~/projects/mongodb_learn $
-```  
+## Get project going 
 Changing permissions:
 ```
-pi@raspberrypi:~$ sudo chmod -R o+rwx directory
+pi@raspberrypi:~$ sudo chmod 777 directory
 ```
-
-## Virtual Environment
+(Daringly giving rwx to all....)
 ```
-$ sudo apt-get install python3-venv   
+git clone https://github.com/BitKnitting/FitHome_mongodb.git
+python3 -m venv venv --prompt mongodb
+source venv/bin/activate
+(mongodb) pip install -r requirements.txt
+```  
 
-pi@raspberrypi:~/projects/mongodb_learn $ python3 -m venv venv --prompt m_test   
-
-pi@raspberrypi:~/projects/mongodb_learn $ source venv/bin/activate  
-
-(m_test) pi@raspberrypi:~/projects/mongodb_learn $
-```
-# Using Flask
+# Notes on Building the Flask App
 I followed along with the [Connecting to a MongoDB in Flask Using Flask-PyMongo](https://www.youtube.com/watch?v=3ZS7LEH_XBg&list=PLXmMXHVSvS-Db9KK1LA7lifcyZm4c-rwj&index=3).  I am using MongoDb on the Rasp Pi and not from a cloud service.
 
 ## Setting the Port
@@ -46,15 +43,14 @@ Similarly to the port, I needed to set the host from 127.0.0.1 to 0.0.0.0...`FLA
 ## Flask / Python
 
 ```
-(m_test) pi@raspberrypi:~/projects/mongodb_learn $ pip install flask flask-pymongo python-dotenv  
+(mongodb) pi@raspberrypi:~/projects/mongodb_learn $ pip install flask flask-pymongo python-dotenv  
 ```
 ## Some Simple Mongo Command
 First, get into the mongo client: `$mongo`.  Go to your database: `>use YOURDATABASE`.  `>show collections` 
 ```
 > show dbs
-> show collections
-> use testdata
-switched to db testdata
+> use FitHome
+switched to db FitHome
 > show collections
 system.indexes
 users

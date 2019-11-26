@@ -1,7 +1,10 @@
 # PlugE
 This project is called PlugE because of it's focus around the TP-Link HS110 Smart Plug.
 
-The purpose of the PlugE project is to collect energy readings from [TP-Link HS110 Smart Plugs](https://amzn.to/2MFSVmH) and send them to a Firebase database project.
+The purpose of the PlugE project is to:
+- get energy readings from [TP-Link HS110 Smart Plugs](https://amzn.to/2MFSVmH)
+- (optionally) send on and off times for the device to [the RaspPi_mongodb Flask service](https://github.com/BitKnitting/RaspPi_mongodb/blob/master/mongodb_learn/pymongoexample/main.py)
+- (optionally) send current and power readings to the RaspPi_mongo Flask service.
 # Hardware/Software
 - [TP-LINK HS110](https://amzn.to/2WBHPUc)
 - [GadfetReactor pyHS100](https://github.com/GadgetReactor/pyHS100) Python Library 
@@ -9,7 +12,7 @@ The purpose of the PlugE project is to collect energy readings from [TP-Link HS1
 # Clone and Start Swimming around
 - Clone the [FitHome_PlugE](https://github.com/BitKnitting/FitHome_PlugE) project onto the Rasp Pi.
 - cd into `FitHome_PlugE/PlugE`
-- install a venv (_Note: if you haven't already, you'll need `$ sudo apt-get install python3-venv` AND THEN you might need to change directory/file perms, e.g.:  '$ sudo chmod -R o+rwx <directory name>_), eg.:
+- install a venv (_Note: if you haven't already, you'll need `$ sudo apt-get install python3-venv` AND THEN you might need to change directory/file perms, e.g.:  `$ sudo chmod -R o+rwx <directory name>`.  More info on venv can be found at [RTD Virtual Environments and Packages](https://docs.python.org/3/tutorial/venv.html)._), eg.:
 ```
 $ python3 -m venv venv --prompt PlugE
 ```
@@ -17,6 +20,7 @@ $ python3 -m venv venv --prompt PlugE
 _Notice the prompt:_ `(PlugE) pi@raspberrypi:~/projects/FitHome_PlugE/PlugE $`
 - Add packages: `pip3 install -r requirements.txt`
 ## Just Keep Swimming...
+- Get a [TP-LINK HS110](https://amzn.to/2WBHPUc) and follow [these instructions](https://www.tp-link.com/us/support/faq/946/).
 - Start Playing around:
 ```
 $ python3
@@ -29,25 +33,14 @@ $ python3
 >>> p.plugs[0]['192.168.86.226'].get_emeter_realtime()
 {'current': 1.634064, 'voltage': 122.876795, 'power': 190.894978, 'total': 28.73}
 ```
-See [RTD Virtual Environments and Packages](https://docs.python.org/3/tutorial/venv.html).
+# Give Readings on/off times to RaspPi-mondodb Flask Service
+[The Raspi-mondodb Flask service](https://github.com/BitKnitting/RaspPi_mongodb/blob/master/mongodb_learn/pymongoexample/main.py):
+- gets readings from the [FitHome energy monitor hardware/firmware](https://github.com/BitKnitting/energy_monitor_firmware) and puts them into the FitHome db within the monitor collection.  [This post](Posts/ExploringEnergyDisaggregation/2-MonitorReadingsIntoMongoDB.md) explains
 # Server
 The RaspPi Server runs in the homeowner's house.
 - __Set IP address (TBD)__
-# TP-Link HS110 Installation 
-Follow [these instructions](https://www.tp-link.com/us/support/faq/946/).
-- 
-# Rasp Pi Installation
-Seen[our Rasp Pi page](RaspPi.md)
-# Create Project
-Our project -PlugE-gets energy readings from the [TP-Link HS110 Smart Plug](https://smile.amazon.com/gp/product/B0178IC5ZY/ref=ppx_yo_dt_b_asin_title_o08_s00?ie=UTF8&psc=1)
-- Create the `pi@raspberrypi:~/projects/PlugE` directory.
-- Create a venv `sudo python3  -m venv venv --prompt PlugE`
-- Activate the venv `source venv/bin/activate`
-- Note python being used `which python` (should be venv)
-# Copy Library
-- Copy directory `pyHS100` from [GitHub](https://github.com/GadgetReactor/pyHS100)
-# Open VS Code
-We use VS Code for our editor.  After using SSHFS to mount the Rasp Pi directory into our filesystem, we go into the projects directory we created (`/home/pi/projects`), and opened the PlugE directory within VS Code.  This way, we can edit/save in VS Code.
+
+
 
 # Environment Variables
 We create environment variables for:
@@ -98,7 +91,7 @@ Not being fluent systemd users, we found the following info useful:
 * [Article on how to autorun service using systemd](https://www.raspberrypi-spy.co.uk/2015/10/how-to-autorun-a-python-script-on-boot-using-systemd/).
 ## Make sure to...
 * set permissions so systemd can execute the script: ```sudo chmod +x {python script}```
-* copy service file to where systemd expects it to be.  systemd service files are located at ```/lib/systemd/system```.  Once we created my .service file, I copied it there and tried out some of the commands. e.g.: ```sudo happyday-collect.service /lib/systemd/system/.```
+* copy service file to where systemd expects it to be.  systemd service files are located at ```/lib/systemd/system```.  Once we created and copied the .service file, we tried out some of the commands. e.g.: ```sudo happyday-collect.service /lib/systemd/system/.```
 * enable the service with ```sudo systemctl enable PlugE.service```.
 * check to make sure the service has been enabled with ```systemctl is-enabled PlugE.service```
 * start the service with ```sudo systemctl start PlugE.service```.
