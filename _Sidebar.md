@@ -16,12 +16,12 @@ Data Analysis
 - [Exploring Energy Disaggregation](https://github.com/BitKnitting/FitHome/wiki/ExploringElectricityDisaggregation)  
   
 Posts
-- test
-- test
-- test
-- test
-- test
-- test
+- [0-UsingMongoDB](https://github.com/BitKnitting/FitHome/wiki/0-UsingMongoDB)
+- [1-ExploringElectricityDisaggregation](https://github.com/BitKnitting/FitHome/wiki/1-ExploringElectricityDisaggregation)
+- [2-MonitorReadingsIntoMongoDB](https://github.com/BitKnitting/FitHome/wiki/2-MonitorReadingsIntoMongoDB)
+- [3-StartStopFlaskApp](https://github.com/BitKnitting/FitHome/wiki/3-StartStopFlaskApp)
+- [4-GettingPlugReadings](https://github.com/BitKnitting/FitHome/wiki/4-GettingPlugReadings)
+- [5-ExportingReadingsIntoColab](https://github.com/BitKnitting/FitHome/wiki/5-ExportingReadingsIntoColab)
 - test
 - test
   
