@@ -52,8 +52,11 @@ First, get into the mongo client: `$mongo`.  Go to your database: `>use YOURDATA
 > use FitHome
 switched to db FitHome
 > show collections
+> db.stats()
 system.indexes
 users
+>db.users.stats()
+
 > db.users.find()
 { "_id" : ObjectId("5dd94f0074fece1e23950257"), "name" : "Cristina" }
 { "_id" : ObjectId("5dd94f0174fece1e23950258"), "name" : "Derek" }
