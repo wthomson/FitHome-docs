@@ -1,5 +1,5 @@
 # Getting Plug Readings
-Our ultimate goal is to detect when the device being monitored by a smart plug is on in the aggregated data.  Let's say I'm using the microwave to heat something up for 2 minutes.  Our approach to data analysis will use data that has a column within the aggregated readings with a 1 in the entry when the monitor is on during the 2 minutes, and a 0 when the monitor is off. 
+Our ultimate goal is to detect when the device being monitored by a smart plug is on in the aggregated data.  Let's say I'm using the microwave to heat something up for 2 minutes.  While we collect aggregated Pr, Pa, I aggregated data, we'll also collect, 
 
 Additionally, as we collect different types of devices, we can start simulating aggregated data by combining multiple device readings so that we'll have more training data.
 ## Our Requirements
@@ -14,3 +14,6 @@ We made the following changes to the PlugE code:
 - Get the name of the device (should be descriptive to the device, e.g.: microwave)
 - detect from readings when on/off.
 - send Post to RaspPi Mongodb when change in state from on/off.
+
+Follow up: 
+- [First attempt at capturing microwave readings within aggregate readings](/Posts/ExploringEnergyDisaggregation/7-AddingMicrowaveReadings.md).

@@ -68,6 +68,14 @@ There's [more on mongodb in this post](Posts/UsingMongoDB.md)
 # Onwards...
 
 The `/home/pi` directory of the RaspPi will be mounted as a drive in Finder.
+# Remote VS Code
+YIPPEE! VS Code supports [remote development using SSH](https://code.visualstudio.com/docs/remote/ssh).  By going through the steps to get this going, we can debug the Python apps running on the Rasp Pi.  
+
+The first thing to do is set up the Rasp Pi for passwordless SSH access as described [in this blog post](https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md).
+
+Next go into the VS Code marketplace and install the [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack).
+
+Once that's done, start up a remote SSH session by going into the commands (through F1) and choose `Remote SSH: Connect to Host`.
 # OOPS - Can't get to Rasp Pi
 ## No SSH, Won't connect to wifi
 We got our Rasp Pi in such a tizzy that we couldn't figure the magic incantations to make it all better (a warning to us explorers who blindly trust a blog post about `ufw`).  Luckily we were able to mount the drive on our Mac following [these directions](https://www.jeffgeerling.com/blog/2017/mount-raspberry-pi-sd-card-on-mac-read-only-osxfuse-and-ext4fuse):
