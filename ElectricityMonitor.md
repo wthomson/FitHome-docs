@@ -3,8 +3,13 @@ There is _so much_ prior work that made it easier to evolve the atm90e32 micropy
 * Tisham Dhar's [atm90e26 Arduino library](https://github.com/whatnick/ATM90E26_Arduino).    
 * The [atm90e26 Circuit Python library I wrote](https://github.com/BitKnitting/HappyDay_ATM90e26_CircuitPython).
 * Circuit Setup's [atm90e32 Arduino library](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter/tree/master/Software/libraries/ATM90E32).
-### GitHub Location
-[energy monitor firmware GitHub repository](https://github.com/BitKnitting/energy_monitor_firmware)
+# For Collaborators
+We are thrilled you want to collaborate with us on this project.  Welcome!  To get started, please follow the steps outlined [in this medium post on GitHub collaboration](https://medium.com/faun/collaborating-on-github-22fd5886fce).     
+
+[Here is our energy monitor firmware GitHub repository](https://github.com/BitKnitting/energy_monitor_firmware).
+
+Let's use our [issues](https://github.com/BitKnitting/energy_monitor_firmware/issues) section to exchange questions, pass along information, assign tasks, etc.
+
 # The Electricity Monitor
 The Electricity Monitor gathers power readings from our breaker box     
 and sends these readings to a Raspberry Pi where the readings are stored within a mongo db.  This is an image of our breaker box:  
@@ -23,8 +28,14 @@ The first step is to gather the hardware::
 - "standard" DIY proto stuff like LEDs to detect the state our code is in, resistors, wires, and a bread board.
 
 __Let's Go!__
+# Start Here
+## First
+Go to your breaker panel and take two pictures similar to the pictures shown here.  Then post these to our GitHub.  This way, we can learn more about how houses have their electricity installed.  By doing so, we can make this project more robust and accomodating to different installations.
+## Second
+You'll need to know what your house is wired for.  As we note below, many homes are wired for 100 Amp service.  As a home's electricity use increased, the service increased to 200 Amps.  Read about the characteristics of a CT below and figure out what CT model will work with your power lines.  Send the info on the CT you will be using to GitHub so we can better understand what we are building.
 
 ## Current Transformers
+
 Current Transformers (CTs) are our "ears" into how devices are using power within our home.  You can see the CTs on our power line.
 ![Current Transformers](images/EnergyMonitorFirmware/CTs.png)  
 Each of our lines has two CTs - one white, one blue.  The white ones come with the Sense monitor.  The blue ones are the ones we use for this project.  
@@ -194,25 +205,21 @@ The libraries we use to connect to wifi and read/send energy readings include:
   
 ```
 If you don't include the ssid and password, the code uses the methods in  
-- [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/join_wifi/wifi_connect.py) will start the wifi code as an Access Point (AP) _See "Setting SSID and password using an Access Point" below_.
+  - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/join_wifi/wifi_connect.py) will start the wifi code as an Access Point (AP) _See "Setting SSID and password using an Access Point" below_.
 
 
 
 
 
-  - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/join_wifi/wifi_connect.py) from workspace/join_wifi.
+ 
   - [send_reading](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/send_reading/send_reading.py) from workspace/send_reading.
   - [app_error.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/errors/app_error.py) from workspace/errors.
-  - Create `config.json` and copy it to the lib directory.  The `config.json` file looks like:  
-  ```
-  {
-    "monitor":"bambi-07052019",
-    "project_id":"my-firebase-projectid-00989"
- }  
 
 
-The monitor name is in the Database under the homeowner's member record.  
-![monitor name in db](images/Database/monitor_node.png) 
+
+
+
+[TODO: in process cleanup....]
   
 The monitor name is created when the homeowner becomes a FitHome member.  The conceptual model is a homeowner becomes a FitHome member for one month.  The homeowner uses the FitHome App to start their month of training.  During this process, one of the available monitors is assigned to the owner.  To uniquely identify this month of use, the monitor name assigned to the homeowner is appended with the date the homeowner signed up for FitHome membership.  In this example, the monitor named "bambi" was assigned to the homeowner.  The homeowner signed up on July 5th, 2019.  
 
