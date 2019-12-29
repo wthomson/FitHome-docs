@@ -10,6 +10,8 @@ We are thrilled you want to collaborate with us on this project.  Welcome!  To g
 
 Let's use our [issues](https://github.com/BitKnitting/energy_monitor_firmware/issues) section to exchange questions, pass along information, assign tasks, etc.
 
+_PLEASE evolve the documentation if it can be improved. This will benefit us all!_
+
 # The Electricity Monitor
 The Electricity Monitor gathers power readings from our breaker box     
 and sends these readings to a Raspberry Pi where the readings are stored within a mongo db.  This is an image of our breaker box:  
@@ -76,27 +78,24 @@ As Robert Wall of [the Open Energy Monitor project](https://openenergymonitor.or
 ## 200 Amp
 TBD: We'll know what to use as the project progresses. 
 
-## Energy Monitor
+# Energy Monitor
 [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/) is the breakout board we use.   This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
 
 Besides the monitor, the breakout board needs a [9V AC Transformer](https://amzn.to/2t7AUro).  What transformer you use becomes important because there are calibration steps (see the Calibration section below) that require different "numbers" depending on the transformer. 
-## An ESP32
-We are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).
-## LEDs and Resisters
+# An ESP32
+We are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  Another option that looks promising is [Sparkfun's ESP32 Thing](https://www.digikey.com/product-detail/en/sparkfun-electronics/DEV-13907/1568-1444-ND/6419476&).  The Sparkfun board includes an FTDI FT23x, which at this point is the easiest way to get USB going since ESP32 boards lack a "true" USB interface (grrrrr........)
+
+# LEDs and Resisters
 We added a green and red LED for easier debugging.  Here's the wiring between the ESP32, LEDs, and Energy Monitor.
 
 ![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png) 
 
 
-# Getting Started - Firmware 
+# Getting Started  
 
 The energy monitor firmware is built on micropython to:
 * Join the homeowner's wifi.  
 * Send energy readings to the Raspberry Pi.    
-
-The ESP32 is connected to [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/).  The micropython firmware: 
-- [main.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/main.py) reads the monitor and then sends the reading to the Raspberry Pi.
-- atm90e32_u.py and atm90e32_registers.py [at this GitHub](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/workspace/atm90_e32) are the libraries called to read and write to the monitor's registers.
 
 ## Wiring
 The ATM90e32 on the Energy Meter speaks to the ESP32 using the [HSPI pins](https://docs.micropython.org/en/latest/esp8266/quickref.html#hardware-spi-bus):
@@ -111,14 +110,17 @@ In addition to SPI wiring, a red and green led - each with a resistor - are wire
 - red LED on pin 27
 - green LED on pin 32
 The resistors are between 220 and 1K ohm.
-## Software
-### OS
+## ESP32 Software
+### micropython
  The [micropython binary we used is v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)  
 
- Steps: 
- - Plug ESP32 into USB port.  
- - Open a Terminal Window.  Easiest to open where the micropython binary is located.
- - (Just to make sure...) Check to see the port's there, e.g.: `ls /dev/tty*
+micropython needs to be installed on your ESP32.  
+#### Make sure USB is working
+The first hurdle is accessing the ESP32 over USB.  Assuming you don't have Sparkfun's ESP32 Thing...if you open a terminal window and run `ls /dev/tty*` and don't see something like `/dev/tty.SLAB_USBtoUART`, the ESP32 isn't available.  You'll need to install the [CP210x driver](https://www.silabs.com/community/interface/knowledge-base.entry.html/2018/03/30/usb_to_uart_bridgev-Dnef).  
+
+_AND IF YOU DO, PLEASE DOCUMENT YOUR EXPERIENCE IN THE ISSUES SECTION._
+
+#### Add micropython
  - Erase the chip: `esptool.py --chip esp32 -p /dev/tty.SLAB_USBtoUART erase_flash`  
  e.g.:  
  ```
@@ -164,16 +166,22 @@ Hard resetting via RTS pin...
 ```  
 Now that we have micropython up and running, it's time to copy over the libraries.
 ### Libraries
-The micropython libraries reside in the /lib directory of the ESP32.  We use [rshell](https://pypi.org/project/rshell/) to copy files.  
-If rshell isn't installed, run `sudo pip3 install rshell`.   We start a Terminal within the workspace folder of the project.  From within rshell we can go between repl and copying files from our Mac to the ESP32.
-- get into rshell:
+The micropython libraries used by [main.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/main.py) reside in the /lib directory of the ESP32.  We need to copy these over.
+#### Open a Terminal
+Open a terminal at the FitHome_monitor directory location.
+#### Install rshell
+We use [rshell](https://pypi.org/project/rshell/) to copy files and to run repl.  If rshell isn't installed, run `sudo pip3 install rshell`.  
+#### Start an rshell session
 ```
 $ rshell
 Welcome to rshell. Use Control-D (or the exit command) to exit rshell.
 
 No MicroPython boards connected - use the connect command to add one
 ```
-- attach to the ESP32:
+#### Attach to the ESP32
+Make sure the ESP32 is attached to a USB port.  First, find out what USB port is being used.  The command to do this is `connect serial <USB> <baud rate>`  
+  
+The command we used within rshel is the first line below:
 ```
 connect serial /dev/tty.SLAB_USBtoUART 115200
 Connecting to /dev/tty.SLAB_USBtoUART (buffer-size 512)...
@@ -184,11 +192,10 @@ Setting time ... Sep 30, 2019 11:00:04
 Evaluating board_name ... pyboard
 Retrieving time epoch ... Jan 01, 2000
 ```
-- copy micropython Libraries
+#### copy micropython Libraries
 
-- cd into the workspace dir of this project.  
+- cd into the FitHome directory of your cloned/forked project.  It contains [these files](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/FitHome_monitor).
 - start an rshell session: `$rshell` and connect to the ESP32 as described above.
-
 - Make lib directory: `mkdir /pyboard/lib`  
 - Copy libraries from Mac/PC, e.g.: `cp atm90_e32/atm90e32_registers.py /pyboard/lib`  
 The libraries we use to connect to wifi and read/send energy readings include:
@@ -209,7 +216,10 @@ If you don't include the ssid and password, the code uses the methods in
 
 
 
-
+__TODO: if you've got this far, try pulling the repo, we should have evolved this document....__
+-------------
+Under construction.....
+___________________
 
  
   - [send_reading](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/workspace/send_reading/send_reading.py) from workspace/send_reading.
@@ -219,7 +229,7 @@ If you don't include the ssid and password, the code uses the methods in
 
 
 
-[TODO: in process cleanup....]
+
   
 The monitor name is created when the homeowner becomes a FitHome member.  The conceptual model is a homeowner becomes a FitHome member for one month.  The homeowner uses the FitHome App to start their month of training.  During this process, one of the available monitors is assigned to the owner.  To uniquely identify this month of use, the monitor name assigned to the homeowner is appended with the date the homeowner signed up for FitHome membership.  In this example, the monitor named "bambi" was assigned to the homeowner.  The homeowner signed up on July 5th, 2019.  
 
