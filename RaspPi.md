@@ -84,8 +84,19 @@ Next go into the VS Code marketplace and install the [Remote Development Extensi
 
 Once that's done, while in VS Code - start up a remote SSH session by going into the commands (through F1) and choose `Remote SSH: Connect to Host`.  And YIPPEE!
 # Other Stuff
+Here's some stuff that may or may not be useful.
+## Mount Drive
+While it is the most useful to use the remote VS Code goop, there are times when it is nice to see the Rasp Pi drive from the finder.  To do this, we use SSHFS.
+- Install [SSHFS](https://osxfuse.github.io/). 
+- Create a directory to mount to (e.g.: `/users/mj/mount`).
+- Open a terminal window and run (replace the raspPi IP address and mount point) `sshfs pi@192.168.86.209: /users/mj/mount`  
+  
+The `/home/pi` directory of the RaspPi will be mounted as a drive in Finder.
+#### Unmount
+Sometimes the mount gets into a state of limbo.  When that happens, this command seems to work: `sudo umount -f /users/mj/mount`.
+_____________________
 
-# OOPS - Can't get to Rasp Pi
+This happened to us (grrrrrrr)...
 ## No SSH, Won't connect to wifi
 We got our Rasp Pi in such a tizzy that we couldn't figure the magic incantations to make it all better (a warning to us explorers who blindly trust a blog post about `ufw`).  Luckily we were able to mount the drive on our Mac following [these directions](https://www.jeffgeerling.com/blog/2017/mount-raspberry-pi-sd-card-on-mac-read-only-osxfuse-and-ext4fuse):
 ```
@@ -111,17 +122,7 @@ now we can access the file from Terminal.
 At least we can get the files off the SD card!
 
 
-### Mount Drive
-- Install [SSHFS](https://osxfuse.github.io/). 
-- Create a directory to mount to (e.g.: `/users/mj/mount`).
-- Open a terminal window and run (replace the raspPi IP address and mount point) `sshfs pi@192.168.86.209: /users/mj/mount`
-#### Unmount
-Sometimes the mount gets into a state of limbo.  When that happens, this command seems to work: `sudo umount -f /users/mj/mount`.
-# Update Python Stuff
-`python3 --version` shows the version of python 3 is 3.7.3.
-- Install venv `sudo apt-get install python3-venv`
-- The python-dotenv is we're using flask.  It picks up environment variables from .flaskenv and .env... `pip3 install python-dotenv`
 
 
-The `/home/pi` directory of the RaspPi will be mounted as a drive in Finder.
+
    
