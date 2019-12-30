@@ -1,3 +1,10 @@
+# Overview
+This part of the Wiki documents (1) in the diagram:  
+![overview](images/EnergyMonitorFirmware/component_design.png)
+- aggregate power reading collection by the Electricity Monitor (details below)
+- into a Raspberry Pi where the data is stored in the Raspberry Pi's mongo db.  
+  
+The readings can then be used by analytical packages such as Pandas, Keras to learn more about how a home's energy is used.
 # Thanks to Those That Went Before
 There is _so much_ prior work that made it easier to evolve the atm90e32 micropython library.  Efforts include:  
 * Tisham Dhar's [atm90e26 Arduino library](https://github.com/whatnick/ATM90E26_Arduino).    
@@ -11,10 +18,21 @@ We are thrilled you want to collaborate with us on this project.  Welcome!  To g
 Let's use our [issues](https://github.com/BitKnitting/energy_monitor_firmware/issues) section to exchange questions, pass along information, assign tasks, etc.
 
 _PLEASE evolve the documentation if it can be improved. This will benefit us all!_
+# Collecting Aggregate Power Readings
+The Electricity Monitor:
+- gathers power readings from our breaker box.
+- put the readings into the mongo db that comes with the Raspberry Pi OS.
+## Gathering Readings
+To gather readings, we use:
+- Two current transformers.
+- An energy monitor.
+- "standard" DIY proto stuff like LEDs to detect the state our code is in, resistors, wires, and a bread board.
+- A raspberry Pi where the collected readings are stored.
+## Setting up
 
-# The Electricity Monitor
-The Electricity Monitor gathers power readings from our breaker box     
-and sends these readings to a Raspberry Pi where the readings are stored within a mongo db.  This is an image of our breaker box:  
+
+and 
+sends these readings to a Raspberry Pi where the readings are stored within a mongo db.  This is an image of our breaker box:  
 ![breaker box](images/EnergyMonitorFirmware/breaker_box.jpg)  
 It is located in our garage.  We have two electricity monitors hooked up.  One is the Sense monitor (the red box), the other is this project.  
 
@@ -27,7 +45,7 @@ The first step is to gather the hardware::
 - Two current transformers.
 - An energy monitor.
 - an ESP32 dev board.
-- "standard" DIY proto stuff like LEDs to detect the state our code is in, resistors, wires, and a bread board.
+
 
 __Let's Go!__
 # Start Here
@@ -208,8 +226,7 @@ The libraries we use to connect to wifi and read/send energy readings include:
 }
   
 ```
-__TODO: More explanation about ssid and password__  
-
+__TODO: More explanation about ssid and__
 If you don't include the ssid and password, the code uses the methods in  
   - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/join_wifi/wifi_connect.py) will start the wifi code as an Access Point (AP) _See "Setting SSID and password using an Access Point" below_.d
 
