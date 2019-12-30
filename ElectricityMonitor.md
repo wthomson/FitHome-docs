@@ -1,8 +1,7 @@
 # Overview
 This part of the Wiki documents (1) in the diagram:  
 ![overview](images/EnergyMonitorFirmware/component_design.png)
-- aggregate power reading collection by the Electricity Monitor (details below)
-- into a Raspberry Pi where the data is stored in the Raspberry Pi's mongo db.  
+The Electricity Monitor (details below) combined with a Raspberry Pi collects aggregate power readings and stores them in the Raspberry Pi's mongo db.
   
 The readings can then be used by analytical packages such as Pandas, Keras to learn more about how a home's energy is used.
 # Thanks to Those That Went Before
@@ -22,35 +21,43 @@ _PLEASE evolve the documentation if it can be improved. This will benefit us all
 The Electricity Monitor:
 - gathers power readings from our breaker box.
 - put the readings into the mongo db that comes with the Raspberry Pi OS.
-## Gathering Readings
-To gather readings, we use:
-- Two current transformers.
-- An energy monitor.
-- "standard" DIY proto stuff like LEDs to detect the state our code is in, resistors, wires, and a bread board.
-- A raspberry Pi where the collected readings are stored.
-## Setting up
+## Required Hardware
+The hardwere we use to gather readings include:
+- Two Current Transformers (CTs) that work for your power lines (see the discussion on Current Transformers below).
+- [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/) is the breakout board we use.   This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
+
+Besides the monitor, the breakout board needs a [9V AC Transformer](https://amzn.to/2t7AUro).  What transformer you use becomes important because there are calibration steps (see the Calibration section below) that require different "numbers" depending on the transformer. 
+- A raspberry Pi where the collected readings are stored within the Raspberry Pi's mongodb.
+- "Standard" DIY proto stuff like LEDs to detect the state our code is in, resistors, wires, and a bread board.
+
+__Let's Get Started!__
+## First
+Go to your breaker panel and take a picture similar to the picture shown here.  
+
+Picture 1:  
+![breaker box](images/EnergyMonitorFirmware/breaker_box.jpg)   
+_Overview picture of breaker box_ 
+
+Then post the image to our GitHub.  This way, we can learn more about how houses have their electricity installed.  By doing so, we can make this project more robust and accomodating to different installations.
+__General Warning__
+Breaker boxes can be a scary place because high voltage runs through.  There is a chance you can kill yourself if you don't know what you are doing.  Or perhaps you know what you are doing but are careless.
+
 
 
 and 
 sends these readings to a Raspberry Pi where the readings are stored within a mongo db.  This is an image of our breaker box:  
-![breaker box](images/EnergyMonitorFirmware/breaker_box.jpg)  
+
 It is located in our garage.  We have two electricity monitors hooked up.  One is the Sense monitor (the red box), the other is this project.  
 
-Breaker boxes can be a scarry place because high voltage runs through.  There is a chance you can kill yourself if you don't know what you are doing.  Or perhaps you know what you are doing but are careless.
-## This project
-Through the code and this document, our goal is to make it (relatively?) easy for you to put together the hardware/software and start collecting power readings.  Subsequent projects address the Raspberry Pi side of receiving and storing the readings.
 
-# Getting Started - Hardware
-The first step is to gather the hardware::
-- Two current transformers.
-- An energy monitor.
-- an ESP32 dev board.
+
+
+
 
 
 __Let's Go!__
 # Start Here
-## First
-Go to your breaker panel and take two pictures similar to the pictures shown here.  Then post these to our GitHub.  This way, we can learn more about how houses have their electricity installed.  By doing so, we can make this project more robust and accomodating to different installations.
+
 ## Second
 You'll need to know what your house is wired for.  As we note below, many homes are wired for 100 Amp service.  As a home's electricity use increased, the service increased to 200 Amps.  Read about the characteristics of a CT below and figure out what CT model will work with your power lines.  Send the info on the CT you will be using to GitHub so we can better understand what we are building.
 
@@ -96,10 +103,7 @@ As Robert Wall of [the Open Energy Monitor project](https://openenergymonitor.or
 #### 200 Amp
 TBD: We'll know what to use as the project progresses. 
 
-## Energy Monitor
-[CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/) is the breakout board we use.   This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
 
-Besides the monitor, the breakout board needs a [9V AC Transformer](https://amzn.to/2t7AUro).  What transformer you use becomes important because there are calibration steps (see the Calibration section below) that require different "numbers" depending on the transformer. 
 ## An ESP32
 We are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  Another option that looks promising is [Sparkfun's ESP32 Thing](https://www.digikey.com/product-detail/en/sparkfun-electronics/DEV-13907/1568-1444-ND/6419476&).  The Sparkfun board includes an FTDI FT23x, which at this point is the easiest way to get USB going since ESP32 boards lack a "true" USB interface (grrrrr........)
 
