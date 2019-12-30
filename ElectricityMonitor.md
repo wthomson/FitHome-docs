@@ -27,12 +27,18 @@ The hardwere we use to gather readings include:
 - [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/) is the breakout board we use.   This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
 
 Besides the monitor, the breakout board needs a [9V AC Transformer](https://amzn.to/2t7AUro).  What transformer you use becomes important because there are calibration steps (see the Calibration section below) that require different "numbers" depending on the transformer. 
-- A raspberry Pi where the collected readings are stored within the Raspberry Pi's mongodb.
-- "Standard" DIY proto stuff like LEDs to detect the state our code is in, resistors, wires, and a bread board.
+- A raspberry Pi where the collected readings are stored within the Raspberry Pi's mongodb.  We are currently using a Raspberry Pi 3 B +.  We just ordered a Pi Zero W to see if that would work since it is smaller and 1/3 the price.  The Pi 3 B+ has done great for this prototype.
+- A power cord for the Raspberry Pi.  We order whatever is recommended since not getting the voltage/current right will cause the board to die (a probably not painful death).
 
-__Let's Get Started!__
+- "Standard" DIY proto stuff that we all most likely already have.  This includes a red and green LEDs along with associated resistors, wires, and a breadboard.
+
+If you're building, order the stuff listed above.  If you are unfamiliar with CT's (like we were), you'll want to read this next section on CTs.
+
+__More about CTs__
+
+We're starting at ordering the CTs, since we found this to be the most confusing part of the hardware.
 ## First
-Aggregate power readings are measured by attaching the Current Transformers to the power lines within a home's breaker box.
+Aggregate power readings are measured by attaching Current Transformers to the power lines within a home's breaker box.  Our breaker box is located in the garage.  We have two electricity monitors hooked up.  One is the Sense monitor (the red box uses the white CTs), the other is this project (using the blue CTs). 
 
 Go to your breaker panel and take a picture similar to the picture shown here.  
 
@@ -41,21 +47,6 @@ Picture 1:
 _Overview picture of breaker box_ 
 
 Then post the image to our GitHub.  This way, we can learn more about how houses have their electricity installed.  By doing so, we can make this project more robust and accomodating to different installations.  
-
-
-
- 
-
-It is located in our garage.  We have two electricity monitors hooked up.  One is the Sense monitor (the red box), the other is this project.  
-
-
-
-
-
-
-
-__Let's Go!__
-# Start Here
 
 ## Second
 You'll need to know what your house is wired for.  As we note below, many homes are wired for 100 Amp service.  As a home's electricity use increased, the service increased to 200 Amps.  Read about the characteristics of a CT below and figure out what CT model will work with your power lines.  Send the info on the CT you will be using to GitHub so we can better understand what we are building.
@@ -102,12 +93,9 @@ As Robert Wall of [the Open Energy Monitor project](https://openenergymonitor.or
 #### 200 Amp
 TBD: We'll know what to use as the project progresses. 
 
+At this point, you should  know which CTs to use, and hopefully ordered two!
 
-## An ESP32
-We are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  Another option that looks promising is [Sparkfun's ESP32 Thing](https://www.digikey.com/product-detail/en/sparkfun-electronics/DEV-13907/1568-1444-ND/6419476&).  The Sparkfun board includes an FTDI FT23x, which at this point is the easiest way to get USB going since ESP32 boards lack a "true" USB interface (grrrrr........)
 
-## LEDs and Resisters
-We added a green and red LED for easier debugging.  Here's the wiring between the ESP32, LEDs, and Energy Monitor.
 
 ![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png) 
 ## Wiring
