@@ -68,35 +68,27 @@ Your choice.
 * Whether the burden resistor is included.  This design assumes the CT __does not__ include the burden resistor.  I.e.: it's output is a current and not a voltage.  
 * The ratio of I(in) : I(out)  
 * The inclusion of a zener diode.  This is a terrific safety measure to make sure when the CT is clamped on, the circuit is not open.    
-# Our Choice of Current Transformers 
+### Our Choice of Current Transformers 
  Two Current Transformers (CTs) are needed to get current readings on the two 120V lines.
- ## 100 Amp   
+ #### 100 Amp   
   We'll be using [the SCT-013-000 CT](/https://learn.openenergymonitor.org/electricity-monitoring/ct-sensors/yhdc-sct-013-000-ct-sensor-report) for 100A homes.  It is popular with DIY home energy monitors.  There are two numbers of interest in the [YHDC SCT-013-000 datasheet](http://statics3.seeedstudio.com/assets/file/bazaar/product/101990029-SCT-013-000-Datasheet.pdf):    
 * The diameter of the clamp opening - 13 mm  
 * The I(OUT) - 50 mA  
 As Robert Wall of [the Open Energy Monitor project](https://openenergymonitor.org/) noted to me _...the manufacturer will tweak the number of secondary turns to give the best accuracy overall.  The ratio of a c.t. is __ALWAYS__ specified as a ratio of two currents, the rated primary current to the corresponding secondary current. So your SCT-013-000 is __100 A : 50 mA__._ 
-## 200 Amp
+#### 200 Amp
 TBD: We'll know what to use as the project progresses. 
 
-# Energy Monitor
+## Energy Monitor
 [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/) is the breakout board we use.   This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
 
 Besides the monitor, the breakout board needs a [9V AC Transformer](https://amzn.to/2t7AUro).  What transformer you use becomes important because there are calibration steps (see the Calibration section below) that require different "numbers" depending on the transformer. 
-# An ESP32
+## An ESP32
 We are using [the ESP32 DevKit C](https://amzn.to/2JInYgj).  Another option that looks promising is [Sparkfun's ESP32 Thing](https://www.digikey.com/product-detail/en/sparkfun-electronics/DEV-13907/1568-1444-ND/6419476&).  The Sparkfun board includes an FTDI FT23x, which at this point is the easiest way to get USB going since ESP32 boards lack a "true" USB interface (grrrrr........)
 
-# LEDs and Resisters
+## LEDs and Resisters
 We added a green and red LED for easier debugging.  Here's the wiring between the ESP32, LEDs, and Energy Monitor.
 
 ![monitor wiring](images/EnergyMonitorFirmware/monitorWiring.png) 
-
-
-# Getting Started  
-
-The energy monitor firmware is built on micropython to:
-* Join the homeowner's wifi.  
-* Send energy readings to the Raspberry Pi.    
-
 ## Wiring
 The ATM90e32 on the Energy Meter speaks to the ESP32 using the [HSPI pins](https://docs.micropython.org/en/latest/esp8266/quickref.html#hardware-spi-bus):
 ```
@@ -110,17 +102,23 @@ In addition to SPI wiring, a red and green led - each with a resistor - are wire
 - red LED on pin 27
 - green LED on pin 32
 The resistors are between 220 and 1K ohm.
-## ESP32 Software
-### micropython
- The [micropython binary we used is v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)  
 
-micropython needs to be installed on your ESP32.  
-#### Make sure USB is working
+
+# Getting Started - Software
+
+The energy monitor firmware is built on micropython and loaded onto the ESP32 to:
+* Join the homeowner's wifi.  
+* Send energy readings to the Raspberry Pi.    
+
+## micropython
+micropython needs to be installed on your ESP32.   The [micropython binary we used is v1.11](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/micropython_build)  
+
+### Make sure USB is working
 The first hurdle is accessing the ESP32 over USB.  Assuming you don't have Sparkfun's ESP32 Thing...if you open a terminal window and run `ls /dev/tty*` and don't see something like `/dev/tty.SLAB_USBtoUART`, the ESP32 isn't available.  You'll need to install the [CP210x driver](https://www.silabs.com/community/interface/knowledge-base.entry.html/2018/03/30/usb_to_uart_bridgev-Dnef).  
 
 _AND IF YOU DO, PLEASE DOCUMENT YOUR EXPERIENCE IN THE ISSUES SECTION._
 
-#### Add micropython
+### Add micropython
  - Erase the chip: `esptool.py --chip esp32 -p /dev/tty.SLAB_USBtoUART erase_flash`  
  e.g.:  
  ```
@@ -165,23 +163,23 @@ Leaving...
 Hard resetting via RTS pin...
 ```  
 Now that we have micropython up and running, it's time to copy over the libraries.
-### Libraries
+## Libraries
 The micropython libraries used by [main.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/main.py) reside in the /lib directory of the ESP32.  We need to copy these over.
-#### Open a Terminal
+### Open a Terminal
 Open a terminal at the FitHome_monitor directory location.
-#### Install rshell
+### Install rshell
 We use [rshell](https://pypi.org/project/rshell/) to copy files and to run repl.  If rshell isn't installed, run `sudo pip3 install rshell`.  
-#### Start an rshell session
+### Start an rshell session
 ```
 $ rshell
 Welcome to rshell. Use Control-D (or the exit command) to exit rshell.
 
 No MicroPython boards connected - use the connect command to add one
 ```
-#### Attach to the ESP32
-Make sure the ESP32 is attached to a USB port.  First, find out what USB port is being used.  The command to do this is `connect serial <USB> <baud rate>`  
+### Attach to the ESP32
+Make sure the ESP32 is connected to a USB port.  First, find out what USB port is being used.  Once that is figured out, the rshell command to connect is `connect serial <USB port being used> <baud rate>`  
   
-The command we used within rshel is the first line below:
+e.g.: The command we used within rshell is the first line below:
 ```
 connect serial /dev/tty.SLAB_USBtoUART 115200
 Connecting to /dev/tty.SLAB_USBtoUART (buffer-size 512)...
@@ -192,29 +190,26 @@ Setting time ... Sep 30, 2019 11:00:04
 Evaluating board_name ... pyboard
 Retrieving time epoch ... Jan 01, 2000
 ```
-#### copy micropython Libraries
+### copy micropython Libraries
 
 - cd into the FitHome directory of your cloned/forked project.  It contains [these files](https://github.com/BitKnitting/energy_monitor_firmware/tree/master/FitHome_monitor).
 - start an rshell session: `$rshell` and connect to the ESP32 as described above.
 - Make lib directory: `mkdir /pyboard/lib`  
-- Copy libraries from Mac/PC, e.g.: `cp atm90_e32/atm90e32_registers.py /pyboard/lib`  
+- Copy libraries from Mac/PC, e.g.: `cp atm90_e32/atm90e32_registers.py /pyboard/lib` 
+#### Libraries 
 The libraries we use to connect to wifi and read/send energy readings include:
-  - [atm90e32_registers.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/atm90_e32/atm90e32_registers.py) and [atm90e32_u.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/atm90_e32/atm90e32_u.py) from workspace/read_monitor.  These libraries wrap interfacing with the atm90e32 over SPI and accessing it's registers.  The [atm90e32's datasheet](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/docs/Atmel-46103-SE-M90E32AS-ApplicationNote.pdf) goes over how to read and write to the registers.  It will be helpful to become acquainted with the contents of this datasheet.
+  - [atm90e32_registers.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/atm90_e32/atm90e32_registers.py) and [atm90e32_u.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/atm90_e32/atm90e32_u.py).  These libraries wrap interfacing with the atm90e32 over SPI and accessing it's registers.  The [atm90e32's datasheet](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/docs/Atmel-46103-SE-M90E32AS-ApplicationNote.pdf) goes over how to read and write to the registers.  It will be helpful to become acquainted with the contents of this datasheet.
   - [config.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/config/config.py) is used to get config values from [config.json](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/config/config.json).  The configuration variables that are used by the micropython libraries include:  
     
 ```
 {
-  "ssid": "YOUR_WIFI_SSID",
   "monitor": "monitor_12212019",
   "project_id": "http://192.168.86.209:4001/monitor",
-  "password": "YOUR_WIFI_PASSWORD"
 }
   
 ```
 If you don't include the ssid and password, the code uses the methods in  
-  - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/join_wifi/wifi_connect.py) will start the wifi code as an Access Point (AP) _See "Setting SSID and password using an Access Point" below_.
-
-
+  - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/join_wifi/wifi_connect.py) will start the wifi code as an Access Point (AP) _See "Setting SSID and password using an Access Point" below_.d
 
 __TODO: if you've got this far, try pulling the repo, we should have evolved this document....__
 -------------
