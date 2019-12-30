@@ -32,20 +32,19 @@ Besides the monitor, the breakout board needs a [9V AC Transformer](https://amzn
 
 __Let's Get Started!__
 ## First
+Aggregate power readings are measured by attaching the Current Transformers to the power lines within a home's breaker box.
+
 Go to your breaker panel and take a picture similar to the picture shown here.  
 
 Picture 1:  
 ![breaker box](images/EnergyMonitorFirmware/breaker_box.jpg)   
 _Overview picture of breaker box_ 
 
-Then post the image to our GitHub.  This way, we can learn more about how houses have their electricity installed.  By doing so, we can make this project more robust and accomodating to different installations.
-__General Warning__
-Breaker boxes can be a scary place because high voltage runs through.  There is a chance you can kill yourself if you don't know what you are doing.  Or perhaps you know what you are doing but are careless.
+Then post the image to our GitHub.  This way, we can learn more about how houses have their electricity installed.  By doing so, we can make this project more robust and accomodating to different installations.  
 
 
 
-and 
-sends these readings to a Raspberry Pi where the readings are stored within a mongo db.  This is an image of our breaker box:  
+ 
 
 It is located in our garage.  We have two electricity monitors hooked up.  One is the Sense monitor (the red box), the other is this project.  
 
