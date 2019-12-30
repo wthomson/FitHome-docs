@@ -208,6 +208,8 @@ The libraries we use to connect to wifi and read/send energy readings include:
 }
   
 ```
+__TODO: More explanation about ssid and password__  
+
 If you don't include the ssid and password, the code uses the methods in  
   - [wifi_connect.py](https://github.com/BitKnitting/energy_monitor_firmware/blob/master/FitHome_monitor/join_wifi/wifi_connect.py) will start the wifi code as an Access Point (AP) _See "Setting SSID and password using an Access Point" below_.d
 
