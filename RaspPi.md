@@ -75,6 +75,17 @@ spi_bcm2835             7596  0
 $ ls /dev/spi*
 /dev/spidev0.0  /dev/spidev0.1
 ```
+## Install spidev
+To access SPI from Python, install spidev: 
+```
+$ pip3 install spidev
+```
+## Install Python Extensions Wrapper
+spidev requires the Python Extension wrapper. This can be installed by:
+```
+$ sudo apt-get install python3-dev
+```
+
 # Enable Remote VS Code
 YIPPEE! VS Code supports [remote development using SSH](https://code.visualstudio.com/docs/remote/ssh).  By going through the steps to get this going, we can debug the Python apps running on the Rasp Pi through VS Code.  E-X-C-I-T-I-N-G!
 

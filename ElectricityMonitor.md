@@ -103,5 +103,5 @@ We'll wire:
 - SPI between the two boards.
 - a Red and Green LED onto the Rasp Pi.
 
-TODO...
+## SPI
 
