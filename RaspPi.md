@@ -54,6 +54,14 @@ An error occurred: Server at localhost:27017 reports wire version 0, but this ve
 (MongoDB 2.6).
 ```
 There's [more on mongodb in this post](Posts/UsingMongoDB.md)
+# Install Blinka
+Adafruit has come through for us once again with their [Blinka library](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/circuitpython-raspi).  The Blinka library will make it much easier for us to talk to the Energy monitor over SPI from our Rasp Pi.
+
+Adafruit has provided us with [installation instructions](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi).
+
+
+
+-> TODO: Undo this gunk.
 # Enable SPI
 The Rasp Pi and Energy Monitor communicate over SPI.  You may want to watch TonyD's video if you are not familiar with SPI on the Raspberry Pi: [_Raspberry Pi & Python SPI Deep Dive with TonyD!_](https://www.youtube.com/watch?v=bHpnu1te0uU).  Another resource is [the Raspberry Pi documenation on SPI](https://www.raspberrypi.org/documentation/hardware/raspberrypi/spi/README.md)
 
