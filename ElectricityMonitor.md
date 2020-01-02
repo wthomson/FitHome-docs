@@ -108,31 +108,10 @@ We'll wire:
 ![CS_SPI_PINS](images/EnergyMonitorFirmware/CircuitSetupPins.png)
 ## Start Wiring
 - Wire the MOSI, MISO, SCLK lines
-- Create a copy of blinka_test.py and run it.  
-```
-import board
-import digitalio
-import busio
- 
-print("Hello blinka!")
- 
-# Try to great a Digital input
-pin = digitalio.DigitalInOut(board.D4)
-print("Digital IO ok!")
- 
-# Not using I2C.  Commented out. 
-# Try to create an I2C device
-#i2c = busio.I2C(board.SCL, board.SDA)
-#print("I2C ok!")
- 
-# Try to create an SPI device
-spi = busio.SPI(board.SCLK, board.MOSI, board.MISO)
-print("SPI ok!")
- 
-print("done!")
-```
+- Run [blinka_test.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/blinkatest.py).
 
 # Software
+[The GitHub location](https://github.com/BitKnitting/FitHome_monitor)
 
 ## The atm90e32 Python Class
 
