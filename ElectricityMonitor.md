@@ -103,11 +103,12 @@ We'll wire:
 - SPI between the two boards.
 - a Red and Green LED onto the Rasp Pi.
 
-## SPI
+# Software
 
-# Using the atm90e32 Python Class
+## The atm90e32 Python Class
 
-## Calibration 
+
+### Calibration 
 We need to calibrate prior to using the library.  
   
 The code in main.py shows several values being passed into the initialization of at atm90e32 instance:  

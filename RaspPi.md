@@ -16,7 +16,24 @@ network={
     ssid="YOURSSID"
     psk="YOURPWD"
 }
+
 ```
+_Note: Multiple wifi networks can be set up by following [this example](https://www.raspberrypi.org/documentation/configuration/wireless/wireless-cli.md)_:  
+  
+```
+network={
+    ssid="SchoolNetworkSSID"
+    psk="passwordSchool"
+    id_str="school"
+}
+
+network={
+    ssid="HomeNetworkSSID"
+    psk="passwordHome"
+    id_str="home"
+}
+```
+ 
 Changing the ssid and psk to match your network.
 - 'safely' remove the SD-card.
 - Put the SD-card into the Rasp-Pi's micro-SD port
@@ -54,10 +71,14 @@ An error occurred: Server at localhost:27017 reports wire version 0, but this ve
 (MongoDB 2.6).
 ```
 There's [more on mongodb in this post](Posts/UsingMongoDB.md)
-# Install Blinka
+# Install SPI Support - Blinka
 Adafruit has come through for us once again with their [Blinka library](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/circuitpython-raspi).  The Blinka library will make it much easier for us to talk to the Energy monitor over SPI from our Rasp Pi.
 
-Adafruit has provided us with [installation instructions](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi).
+- Follow [Adafruit's installation steps](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi).
+- Test SPI:
+    - Wire up MOSI, MISO, SCLK pins to the energy monitor.
+![SPI_onRaspPi](images/EnergyMonitorFirmware/SPI_on_RaspPi.png)
+    - Create a copy of blinka_test.py and run it.
 
 
 
