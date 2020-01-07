@@ -98,35 +98,63 @@ At this point, you should  know which CTs to use, and hopefully ordered two!
 We've got our hardware.  Time to wire the energy monitor to the Raspberry Pi.
 # Get the Rasp Pi Up and Running
 We've got our Rasp Pi.  Time to install the OS and configure.  We document the steps on our [Raspberry Pi page](https://github.com/BitKnitting/FitHome/wiki/RaspPi).
+# Set up FitHome_monitor Git repo
+  
+Now that the Rasp Pi has been configured, let's get the python code used to talk with the energy monitor up and running.
+- Create a projects directory on your Rasp Pi.
+- Go into the projects directory and clone [the FitHome monitor repo](https://github.com/BitKnitting/FitHome_monitor)
+- Go into the FitHome_monitor directory and create a [Python Virtual Environment](https://docs.python.org/3/tutorial/venv.html). E.g.:  
+```
+python3 -m venv venv -- prompt FH_monitor
+```
+creates a virtual environment in the venv directory.  When the venv is activated, the prompt will be FH_monitor.  Now that the venv is installed, activate, e.g.:  
+```
+source venv/bin/activate
+```
+- Install Python packages (stuff like everything needed for [Blinka](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/circuitpython-raspi))using `pip install -r requirements.txt`.
+# Access Project through VS Code
+Follow the steps outlined in the section on [Remote VS Code](RaspPi.md)
+# Getting to Blinka
+Run [blinkatest.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/blinkatest.py).  If all goes well, you should get:
+```
+Hello blinka!
+Digital IO ok!
+SPI ok!
+done!
+```
+
 # Wire the Rasp Pi to the Energy Monitor
 We'll wire:
 - SPI between the two boards.
 - a Red and Green LED onto the Rasp Pi.  
-## SPI Pins on Rasp Pi
-![SPI_onRaspPi](images/EnergyMonitorFirmware/SPI_on_RaspPi.png)
-## SPI Pins on Energy Monitor
-![CS_SPI_PINS](images/EnergyMonitorFirmware/CircuitSetupPins.png)
-## Start Wiring
-- Wire the MOSI, MISO, SCLK lines
-- Run [blinka_test.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/blinkatest.py).
+## SPI Pins on Rasp Pi 3 B+
+The diagram below points out the Rasp Pi 3B+'s pinout:
+![SPI_onRaspPi](images/EnergyMonitorFirmware/RaspPi_pinout.png)
+- MOSI: pin 19
+- MISO: pin 21
+- CLK:  pin 23
+- GND: pin 25
+We'll use GPIO 5 (pin 29) for CS, noting in the [Blinka documentation](https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/spi-sensors-devices),
+_The upshot here is basically never connect anything to CE0 (or CE1 for that matter). Use whatever chip select pin you define in CircuitPython and just leave the CE pins alone, it will toggle as if it is the chip select line, completely on its own, so you shouldn't try to use it as a digital input/output/whatever._
+- Wire the MOSI, MISO, SCLK, GND, CS lines from the Rasp Pi to the Energy monitor.
 
-# Software
-[The GitHub location](https://github.com/BitKnitting/FitHome_monitor)
+![CS_SPI_PINS](images/EnergyMonitorFirmware/CircuitSetupPins.png)
+# Test SPI
+Run [atm90e32_spi_test.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/atm90e32_spi_test.py).  It is a simple SPI read.  Here is an image of the traffic from our logic analyzer:
+![SPI_read_logic](images/EnergyMonitorFirmware/SPI_read_test.png) 
+We know at least SPI read is working correctly.
+
+# Getting to Power Readings
+The [atm90e32 class](https://github.com/BitKnitting/FitHome_monitor/blob/master/RaspPi/atm90e32/atm90e32_pi.py) holds the code that provides easy access to the energy monitor.
 
 ## The atm90e32 Python Class
-
+The class:
+- initializes the monitor by setting the calibration properties.  Calibration properties differ depending on the CT and power supply that is being used with the moniter (see below).
+- gets the power readings.
 
 ### Calibration 
-We need to calibrate prior to using the library.  
+We need to calibrate prior to using the library.  The default values are discussed in [Circuit Setup's documentation](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter#calibration).  
   
-The code in main.py shows several values being passed into the initialization of at atm90e32 instance:  
-```
-
-
-ATM90e32(lineFreq, PGAGain, VoltageGain, CurrentGainCT1, 0, CurrentGainCT2)
- ```
-The default values are discussed in [Circuit Setup's documentation](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter#calibration).  
-
 We use the default values for:  
 ```
 lineFreq = 4485  # 4485 for 60 Hz (North America)
