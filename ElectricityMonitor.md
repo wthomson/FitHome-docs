@@ -102,10 +102,16 @@ We've got our Rasp Pi.  Time to install the OS and configure.  We document the s
   
 Now that the Rasp Pi has been configured, let's get the python code used to talk with the energy monitor up and running.
 - Create a projects directory on your Rasp Pi.
-- Go into the projects directory and clone [the FitHome monitor repo](https://github.com/BitKnitting/FitHome_monitor)
+- Go into the projects directory and clone [the FitHome monitor repo](https://github.com/BitKnitting/FitHome_monitor).  We can see our git remote has been setup:  
+```
+$ git remote -v
+origin	https://github.com/BitKnitting/FitHome_monitor.git (fetch)
+origin	https://github.com/BitKnitting/FitHome_monitor.git (push)
+``` 
+
 - Go into the FitHome_monitor directory and create a [Python Virtual Environment](https://docs.python.org/3/tutorial/venv.html). E.g.:  
 ```
-python3 -m venv venv -- prompt FH_monitor
+python3 -m venv venv --prompt FH_monitor
 ```
 creates a virtual environment in the venv directory.  When the venv is activated, the prompt will be FH_monitor.  Now that the venv is installed, activate, e.g.:  
 ```
@@ -115,8 +121,9 @@ source venv/bin/activate
 # Access Project through VS Code
 Follow the steps outlined in the section on [Remote VS Code](RaspPi.md)
 # Getting to Blinka
-Run [blinkatest.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/blinkatest.py).  If all goes well, you should get:
+Run [blinkatest.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/blinkatest.py). 
 ```
+(venv) pi@raspberrypi:~/projects/FitHome_monitor $ python3 blinkatest.py
 Hello blinka!
 Digital IO ok!
 SPI ok!
@@ -127,7 +134,9 @@ done!
 We'll wire:
 - SPI between the two boards.
 - a Red and Green LED onto the Rasp Pi.  
-## SPI Pins on Rasp Pi 3 B+
+## SPI Pins on Rasp Pi
+We've tried this on the Rasp Pi 3 B+, Zero W, 3 BV1.2... 
+  
 The diagram below points out the Rasp Pi 3B+'s pinout:
 ![SPI_onRaspPi](images/EnergyMonitorFirmware/RaspPi_pinout.png)
 - MOSI: pin 19
