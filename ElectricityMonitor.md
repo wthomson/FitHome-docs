@@ -98,6 +98,12 @@ At this point, you should  know which CTs to use, and hopefully ordered two!
 We've got our hardware.  Time to wire the energy monitor to the Raspberry Pi.
 # Get the Rasp Pi Up and Running
 We've got our Rasp Pi.  Time to install the OS and configure.  We document the steps on our [Raspberry Pi page](https://github.com/BitKnitting/FitHome/wiki/RaspPi).
+# Enable SPI
+SPI needs to be enabled on the Rasp Pi.  
+- Start an `ssh` session.
+- `sudo raspi-config`
+- Go to `Interfacing Options`, choose SPI, choose Enable.
+
 # Set up FitHome_monitor Git repo
   
 Now that the Rasp Pi has been configured, let's get the python code used to talk with the energy monitor up and running.

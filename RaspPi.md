@@ -43,6 +43,9 @@ Changing the ssid and psk to match your network.
 # Headless Config - Connect to Rasp Pi
 Put the microSD card into the Rasp Pi and boot it up.  Our next step is to figure out it's IP address.  
 
+## Static IP
+Sometimes it is convenient to assign a static IP. We're using Google wifi.  The key to assignment via Google Wifi is use IP addresses that are >= 30 for the fourth byte.
+## Figure out IP address
 These steps are covered on this [web page](https://itsfoss.com/ssh-into-raspberry/).  
 
 - Figure out the local net our Rasp-Pi is on.
@@ -67,7 +70,9 @@ We'll also need Git/Github:
 `sudo apt-get install git`
 
 # Enable Remote VS Code
-YIPPEE! VS Code supports [remote development using SSH](https://code.visualstudio.com/docs/remote/ssh).  By going through the steps to get this going, we can debug the Python apps running on the Rasp Pi through VS Code.  E-X-C-I-T-I-N-G!
+_NOTE: Remote VS Code [does not support the Rasp Pi Zero (or ZeroW)](https://github.com/microsoft/vscode-remote-release/issues/669)_  
+  
+YIPPEE! VS Code supports [remote development using SSH](https://code.visualstudio.com/docs/remote/ssh).  We can debug the Python apps running on the Rasp Pi through VS Code.  E-X-C-I-T-I-N-G!
 
 The first thing to do is set up the Rasp Pi for passwordless SSH access as described [in this blog post](https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md).
 
