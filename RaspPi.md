@@ -80,6 +80,9 @@ Next go into the VS Code marketplace and install the [Remote Development Extensi
 
 Once that's done, while in VS Code - start up a remote SSH session by going into the commands (through F1) and choose `Remote SSH: Connect to Host`.  And YIPPEE!
 
+# Using SPI
+The electricity monitor uses SPI to communicate.  We document the setting up the SPI interface within [the electricity monitor documentation](ElectricityMonitor.md).
+
 TODO - clean up from here down.
 
 # Install MongoDB
