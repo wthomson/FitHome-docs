@@ -21,7 +21,7 @@ We are thrilled you want to collaborate with us on this project.  Welcome!  To g
 _PLEASE evolve the documentation if it can be improved. This will benefit us all!_
 
 # Required Hardware
-The hardwere we use to gather readings include:
+The hardware we use to gather readings include:
 - Two Current Transformers (CTs) that work for your power lines (see the discussion on Current Transformers below).
 - [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/) is the breakout board we use.   This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
 
@@ -200,7 +200,7 @@ Calculate the value, and change the `VoltageGain` to the calculated value.
 ### Current Calibration
 We found the default current gain gave current readings close to what we got with the Kill-A-Watt.  Because it was easy to do so, we set the `CurrentGainCT1` and `CurrentGainCT2` values to our calculation, using the current readings in place of the voltage readings as discussed in the app note.
 # Main Code
-The main code is in [ReadAndStore.py]()
+The main code is in [ReadAndStore.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/ReadAndStore.py)
 # Systemd Service
 We use [systemd](https://en.wikipedia.org/wiki/Systemd) to run ReadAndStore.py in the background on our Rasp Pi.  The file is [ReadAndStore.service](https://github.com/BitKnitting/FitHome_monitor/blob/master/ReadAndStore.service).
 ## New to SystemD
@@ -230,5 +230,19 @@ PlugE.service - Collect and send power readings.
  Changes made to the systemd service (in this case the Python code), requires the command `systemctl daemon-reload` to make systemd aware of the changes.  This is followed by `systemctl restart {service script}`.
  ## List All Services
  ```systemctl list-units | grep .service``` - lists all the current services running.
+ # MongoDB
+ The Rasp Pi OS comes with a super easy and flexible datastore, mongodb.  Installation is discussed within our [Rasp Pi Setup documentation](RaspPi.md).
+ ## Getting Around
+ You can access mongodb from the ssh command line by typing  
+ ```
+ pi@raspberrypi:~ $ mongo
+MongoDB shell version: 2.4.14
+```
+ For the most part, we Google around until we find the mongo db commands we want to use.  Ones we use often include:  
+ ```
+>use FitHome
+>db.aggregate.find()
+```
+## Saving data
 
 
