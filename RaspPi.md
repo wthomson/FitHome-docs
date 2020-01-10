@@ -100,6 +100,8 @@ An error occurred: Server at localhost:27017 reports wire version 0, but this ve
 There's [more on mongodb in this post](Posts/ExploringEnergyDisaggregation/0-UsingMongoDB.md)
 
 # Uninstall MongoDB
+...just in case...  
+
 [From this post](https://askubuntu.com/questions/147135/how-can-i-uninstall-mongodb-and-reinstall-the-latest-version):  
   
 ```

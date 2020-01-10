@@ -1,26 +1,25 @@
+# Document Goal
+The goal of this document is to get you set up and running your own home electricity monitoring system.
+
 # Overview
-This part of the Wiki documents (1) in the diagram:  
-![overview](images/EnergyMonitorFirmware/component_design.png)
-The Electricity Monitor (details below) combined with a Raspberry Pi collects aggregate power readings and stores them in the Raspberry Pi's mongo db.
+
+The Electricity Monitor communicates to a Raspberry Pi over SPI to read and then send active and reactive aggregate power readings to the Raspberry Pi.  Readings are stored within the Raspberry Pi's mongo DB.  
+
+![overview](images/EnergyMonitorFirmware/Electricity_Monitor_Rasp_Pi.png)  
   
-The readings can then be used by analytical packages such as Pandas, Keras to learn more about how a home's energy is used.
+The readings can then be used by analytical packages such as Pandas, Keras - or whatever you want to use! - to learn more about how a home's energy is used.
 # Thanks to Those That Went Before
 There is _so much_ prior work that made it easier to evolve the atm90e32 micropython library.  Efforts include:  
 * Tisham Dhar's [atm90e26 Arduino library](https://github.com/whatnick/ATM90E26_Arduino).    
 * The [atm90e26 Circuit Python library I wrote](https://github.com/BitKnitting/HappyDay_ATM90e26_CircuitPython).
 * Circuit Setup's [atm90e32 Arduino library](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter/tree/master/Software/libraries/ATM90E32).
+# GitHub
+[Our GitHub](https://github.com/BitKnitting/FitHome_monitor)
 # For Collaborators
 We are thrilled you want to collaborate with us on this project.  Welcome!  To get started, please follow the steps outlined [in this medium post on GitHub collaboration](https://medium.com/faun/collaborating-on-github-22fd5886fce).     
 
-[Here is our energy monitor firmware GitHub repository](https://github.com/BitKnitting/energy_monitor_firmware).
-
-Let's use our [issues](https://github.com/BitKnitting/energy_monitor_firmware/issues) section to exchange questions, pass along information, assign tasks, etc.
-
 _PLEASE evolve the documentation if it can be improved. This will benefit us all!_
-# Collecting Aggregate Power Readings - Overview
-The Electricity Monitor:
-- gathers power readings from our breaker box.
-- put the readings into the mongo db that comes with the Raspberry Pi OS.
+
 # Required Hardware
 The hardwere we use to gather readings include:
 - Two Current Transformers (CTs) that work for your power lines (see the discussion on Current Transformers below).
@@ -30,14 +29,10 @@ Besides the monitor, the breakout board needs a [9V AC Transformer](https://amzn
 - A raspberry Pi where the collected readings are stored within the Raspberry Pi's mongodb.  We are currently using a Raspberry Pi 3 B +.  We just ordered a Pi Zero W to see if that would work since it is smaller and 1/3 the price.  The Pi 3 B+ has done great for this prototype.
 - A power cord for the Raspberry Pi.  We order whatever is recommended since not getting the voltage/current right will cause the board to die (a probably not painful death).
 
-- "Standard" DIY proto stuff that we all most likely already have.  This includes a red and green LEDs along with associated resistors, wires, and a breadboard.
+- "Standard" DIY proto stuff that we all most likely already have.  This includes a green LED along with associated resistor, wires, and a breadboard.
 
-If you're building, order the stuff listed above.  If you are unfamiliar with CT's (like we were), you'll want to read this next section on CTs.
+## More about CTs
 
-__More about CTs__
-
-We're starting at ordering the CTs, since we found this to be the most confusing part of the hardware.
-## First
 Aggregate power readings are measured by attaching Current Transformers to the power lines within a home's breaker box.  Our breaker box is located in the garage.  We have two electricity monitors hooked up.  One is the Sense monitor (the red box uses the white CTs), the other is this project (using the blue CTs). 
 
 Go to your breaker panel and take a picture similar to the picture shown here.  
@@ -48,10 +43,10 @@ _Overview picture of breaker box_
 
 Then post the image to our GitHub.  This way, we can learn more about how houses have their electricity installed.  By doing so, we can make this project more robust and accomodating to different installations.  
 
-## Second
+### House Wiring
 You'll need to know what your house is wired for.  As we note below, many homes are wired for 100 Amp service.  As a home's electricity use increased, the service increased to 200 Amps.  Read about the characteristics of a CT below and figure out what CT model will work with your power lines.  Send the info on the CT you will be using to GitHub so we can better understand what we are building.
 
-## Current Transformers
+### Current Transformers
 
 Current Transformers (CTs) are our "ears" into how devices are using power within our home.  You can see the CTs on our power line.
 ![Current Transformers](images/EnergyMonitorFirmware/CTs.png)  
@@ -96,7 +91,7 @@ TBD: We'll know what to use as the project progresses.
 At this point, you should  know which CTs to use, and hopefully ordered two!
 
 We've got our hardware.  Time to wire the energy monitor to the Raspberry Pi.
-# Get the Rasp Pi Up and Running
+# Set up the Rasp Pi
 We've got our Rasp Pi.  Time to install the OS and configure.  We document the steps on our [Raspberry Pi page](https://github.com/BitKnitting/FitHome/wiki/RaspPi).
 # Enable SPI
 SPI needs to be enabled on the Rasp Pi.  
@@ -135,7 +130,10 @@ Digital IO ok!
 SPI ok!
 done!
 ```
-
+# Other SPI Tests
+- [simple_read.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/simple_read.py)
+- [simple_write.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/simple_write.py)
+- [simple_atm90e32_test.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/simple_atm90e32_test.py)
 # Wire the Rasp Pi to the Energy Monitor
 We'll wire:
 - SPI between the two boards.
@@ -160,7 +158,7 @@ Run [atm90e32_spi_test.py](https://github.com/BitKnitting/FitHome_monitor/blob/m
 We know at least SPI read is working correctly.
 
 # Getting to Power Readings
-The [atm90e32 class](https://github.com/BitKnitting/FitHome_monitor/blob/master/RaspPi/atm90e32/atm90e32_pi.py) holds the code that provides easy access to the energy monitor.
+The [atm90e32 class](https://github.com/BitKnitting/FitHome_monitor/blob/master/RaspPi/atm90e32/atm90_e32_pi.py) holds the code that provides easy access to the energy monitor.
 
 ## The atm90e32 Python Class
 The class:
@@ -201,5 +199,36 @@ new `Voltage Gain = 121.5/117.5*36650 = 37898`
 Calculate the value, and change the `VoltageGain` to the calculated value.
 ### Current Calibration
 We found the default current gain gave current readings close to what we got with the Kill-A-Watt.  Because it was easy to do so, we set the `CurrentGainCT1` and `CurrentGainCT2` values to our calculation, using the current readings in place of the voltage readings as discussed in the app note.
+# Main Code
+The main code is in [ReadAndStore.py]()
+# Systemd Service
+We use [systemd](https://en.wikipedia.org/wiki/Systemd) to run ReadAndStore.py in the background on our Rasp Pi.  The file is [ReadAndStore.service](https://github.com/BitKnitting/FitHome_monitor/blob/master/ReadAndStore.service).
+## New to SystemD
+Not being fluent systemd users, we found the following info useful:
+* [Intro to systemd video](https://youtu.be/AtEqbYTLHfs?t=147).  
+  * [Place in the video where using commands starts](https://youtu.be/AtEqbYTLHfs?t=230).
+* [systemd in Raspberry Pi documentation](https://www.raspberrypi.org/documentation/linux/usage/systemd.md)
+* [Article on how to autorun service using systemd](https://www.raspberrypi-spy.co.uk/2015/10/how-to-autorun-a-python-script-on-boot-using-systemd/).
+## Make sure to...
+* set permissions so systemd can execute the script: ```sudo chmod +x {python script}```
+* copy service file to where systemd expects it to be.  ```sudo cp {service script} /lib/systemd/system/.```
+* enable the service with ```sudo systemctl enable {service script}```.
+* check to make sure the service has been enabled with ```systemctl is-enabled {service script}```
+* start the service with ```sudo systemctl start {service script}```.
+* check to make sure the service has been started with ```systemctl is-active {service script}```
+See the ```systemd status``` command info below to debug why your service did not start.
+## Debugging
+If `$ systemctl status {service script}` returns something like....
+```
+PlugE.service - Collect and send power readings.
+   Loaded: loaded (/lib/systemd/system/PlugE.service; enabled; vendor preset: enabled)
+   Active: failed (Result: exit-code) since Sun 2019-10-13 21:03:49 BST; 22s ago
+ Main PID: 2813 (code=exited, status=1/FAILURE)
+ ```  
+ Check the debug records with `journalctl _PID=2813` = where the PID comes from the Main PID.  
+ ## Changes to Code and Systemd
+ Changes made to the systemd service (in this case the Python code), requires the command `systemctl daemon-reload` to make systemd aware of the changes.  This is followed by `systemctl restart {service script}`.
+ ## List All Services
+ ```systemctl list-units | grep .service``` - lists all the current services running.
 
 
