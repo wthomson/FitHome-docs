@@ -279,7 +279,7 @@ Deleting unused files...
 Created file aggregate.pkl.zip.
 ```
 # Explore Readings with colab
-Now that we have the data, let's take a quick look in a colab notebook.
+Now that we have the data, let's take a quick look in [a colab notebook](https://colab.research.google.com/github/BitKnitting/FitHome_monitor/blob/master/data_extraction/FitHome_monitor_aggregate_readings.ipynb).
 
 
 
