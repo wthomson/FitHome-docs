@@ -98,7 +98,7 @@ Not being fluent systemd users, we found the following info useful:
 * check to make sure the service has been started with ```systemctl is-active PlugE.service```
 See the ```systemd status``` command info below to debug why your service did not start.
 ## Debugging
-If `$ systemctl status PlugE.service` returns
+If `$ systemctl status PlugE_microwave.service` returns
 ```
 PlugE.service - Collect and send power readings.
    Loaded: loaded (/lib/systemd/system/PlugE.service; enabled; vendor preset: enabled)

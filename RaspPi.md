@@ -97,7 +97,18 @@ __NOTE: We needed to use this version of pymongo.  If not, we'd get an error:__
 An error occurred: Server at localhost:27017 reports wire version 0, but this version of PyMongo requires at least 2
 (MongoDB 2.6).
 ```
-There's [more on mongodb in this post](Posts/UsingMongoDB.md)
+There's [more on mongodb in this post](Posts/ExploringEnergyDisaggregation/0-UsingMongoDB.md)
+
+# Uninstall MongoDB
+[From this post](https://askubuntu.com/questions/147135/how-can-i-uninstall-mongodb-and-reinstall-the-latest-version):  
+  
+```
+sudo apt-get purge mongodb mongodb-clients mongodb-server mongodb-dev
+sudo apt-get purge mongodb-10gen
+sudo apt-get autoremove
+```
+This should also remove your config from `/etc/mongodb.conf`. If you want to completely clean up, you might also want to remove the data directory `/var/lib/mongodb`, so long as you backed it up or don't want it any more.
+
 
 # Other Stuff
 Here's some stuff that may or may not be useful.
@@ -112,8 +123,9 @@ The `/home/pi` directory of the RaspPi will be mounted as a drive in Finder.
 Sometimes the mount gets into a state of limbo.  When that happens, this command seems to work: `sudo umount -f /users/mj/mount`.
 _____________________
 
-This happened to us (grrrrrrr)...
 ## No SSH, Won't connect to wifi
+This happened to us (grrrrrrr)... We had files we wanted to access but could not longer connect to the Rasp Pi over ssh....
+
 We got our Rasp Pi in such a tizzy that we couldn't figure the magic incantations to make it all better (a warning to us explorers who blindly trust a blog post about `ufw`).  Luckily we were able to mount the drive on our Mac following [these directions](https://www.jeffgeerling.com/blog/2017/mount-raspberry-pi-sd-card-on-mac-read-only-osxfuse-and-ext4fuse):
 ```
 sudo mkdir /Volumes/rpi
