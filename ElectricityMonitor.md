@@ -1,3 +1,5 @@
+# Contact
+<a href="mailto:contact@fithome.life">Email Us</a>  
 # Document Goal
 The goal of this document is to get you set up and running your own home electricity monitoring system.
 

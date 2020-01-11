@@ -1,5 +1,6 @@
 # Contact
-contact@fithome.life
+<a href="mailto:contact@fithome.life">Email Us</a>  
+
 
 # Welcome 
 Welcome to the FitHome Wiki.  FitHome is a one month home training experience that makes it fun and easy for busy homeowners to lower their electricity consumption by at least 15%.  FitHome uses software and hardware to provide the homeowner with immediate feedback, personalized advice, and community involvement.  After one month, the homeowner no longer needs a trainer.  They have evolved their understanding of their use of electricity to continue saving electricity and being more aware of the impact of our choices on effecting climate change.

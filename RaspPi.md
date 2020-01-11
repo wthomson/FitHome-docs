@@ -1,3 +1,6 @@
+# Contact
+<a href="mailto:contact@fithome.life">Email Us</a>  
+# Overview
 We are far from experts when it comes to using the Rasp Pi.  Here we document the goop we do each time we start up a new Rasp Pi.
 
 # Installation
