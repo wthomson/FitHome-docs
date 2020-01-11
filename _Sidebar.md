@@ -1,3 +1,3 @@
 [Home/Overview](https://github.com/BitKnitting/FitHome/wiki)  
   
-[Electricity Monitor](ElectricityMonitor.md)
+[Electricity Monitor](https://github.com/BitKnitting/FitHome/wiki/ElectricityMonitor.md)
