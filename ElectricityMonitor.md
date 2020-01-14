@@ -254,32 +254,8 @@ users
 { "_id" : ObjectId("5dd975e574fece1e2395025a"), "name" : "Derek" }
 ```
 ## Export Readings to Pandas
-The goal is to export readings from mongodb on RaspPi into a zipped pickle file.  The file can then be easily read by Pandas for analysis.
-### Mongo_to_Pandas
-The [mongo_to_pandas script](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/mongo_to_pandas) takes in the database, collection names of the data in the mongo db as well as an output name for the file and:
-- Exports readings in the collection into a .json file.
-- Takes the .json file and pickles it using the [json_to_pickle.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/json_to_pickle.py) Python script.
-- Zips the pickled file into the <filename>.pkl.zip filename.  
-To export the data first go into the FitHome_monitor project's virtual environment.  Then:  
-```
-(FH_monitor) pi@raspberrypi:~/projects/FitHome_monitor/data_extraction $ ./mongo_to_pandas
-****************************
-Please start within the venv
-****************************
-Enter the db name: FitHome
-Enter the collection name: aggregate
-The db name is FitHome
-The collection name is aggregate
-Continue (y or n)?y
-Getting readings out of mongodb into a json file...
-connected to: 127.0.0.1
-exported 15576 records
-Pickling the json file ...
-Zipping the pickled file...
-  adding: aggregate.pkl (deflated 36%)
-Deleting unused files...
-Created file aggregate.pkl.zip.
-```
+We wrote a python script - [extract_readings.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.py) - that gets all the readings from the FitHome mongo db / aggregate collection and stores it into a zip'd pickle file - [aggregate.pkl.zip](https://github.com/BitKnitting/FitHome_monitor/tree/master/data_extraction) for easy reading into a colab notebook.
+
 # Explore Readings with colab
 Now that we have the data, let's take a quick look in [a colab notebook](https://colab.research.google.com/github/BitKnitting/FitHome_monitor/blob/master/data_extraction/FitHome_monitor_aggregate_readings.ipynb).
 
