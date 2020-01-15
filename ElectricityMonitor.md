@@ -254,9 +254,24 @@ users
 { "_id" : ObjectId("5dd975e574fece1e2395025a"), "name" : "Derek" }
 ```
 ## Export Readings to Pandas
-We wrote a python script - [extract_readings.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.py) - that gets all the readings from the FitHome mongo db / aggregate collection and stores it into a zip'd pickle file - [aggregate.pkl.zip](https://github.com/BitKnitting/FitHome_monitor/tree/master/data_extraction) for easy reading into a colab notebook.
+We run a SystemD service - [extract_readings.service](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.service) that relies on a [SystemD timer file](https://wiki.archlinux.org/index.php/Systemd/Timers) -  [extract_readings.timer](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.timer) - to run
+ [extract_readings.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.py).  This python script relies on the [MonitorData](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/monitor_data.py) to get the records out of the mongodb (database = FitHome, collection = aggregate) and create a pickled zip file.  We chose this format because it is easy to read the data with the Pandas package.
+ ### Environment Variables
+Notice the MonitorData class uses environment variables. We used the technique discussed [in this post](https://unix.stackexchange.com/questions/287743/making-environment-variables-available-for-downstream-processes-started-within-a).
+
 
 # Explore Readings with colab
+Onto exploring the data!
+
+For this part of the workflow, we use SSHFS, colab, and some simple utility functions to start playing with the data.
+
+S
+- Google colab
+- SSHFS
+
+
+
+_TODO: NEED TO UPDATE_  
 Now that we have the data, let's take a quick look in [a colab notebook](https://colab.research.google.com/github/BitKnitting/FitHome_monitor/blob/master/data_extraction/FitHome_monitor_aggregate_readings.ipynb).
 
 

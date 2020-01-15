@@ -86,7 +86,7 @@ Once that's done, while in VS Code - start up a remote SSH session by going into
 # Using SPI
 The electricity monitor uses SPI to communicate.  We document the setting up the SPI interface within [the electricity monitor documentation](ElectricityMonitor.md).
 
-TODO - clean up from here down.
+
 
 # Install MongoDB
 To install mongodb:  
@@ -117,11 +117,13 @@ This should also remove your config from `/etc/mongodb.conf`. If you want to com
 
 # Other Stuff
 Here's some stuff that may or may not be useful.
-## Mount Drive
+## Change Time Zone
+The Rasp Pi's date/time is set to GMT.  We find it easier to work with dates in our local timezone.  We followed [these instructions](https://www.mbtechworks.com/how-to/change-time-zone-raspbian.html).
+## [Mount Drive](#mount_drive)
 While it is the most useful to use the remote VS Code goop, there are times when it is nice to see the Rasp Pi drive from the finder.  To do this, we use SSHFS.
 - Install [SSHFS](https://osxfuse.github.io/). 
-- Create a directory to mount to (e.g.: `/users/mj/mount`).
-- Open a terminal window and run (replace the raspPi IP address and mount point) `sshfs pi@192.168.86.209: /users/mj/mount`  
+- Create a directory to mount to (e.g.: `/users/auser/mount`).
+- Open a terminal window and run (replace the raspPi IP address and mount point) e.g.: `sshfs pi@192.168.86.209: /users/auser/mount`  
   
 The `/home/pi` directory of the RaspPi will be mounted as a drive in Finder.
 #### Unmount
