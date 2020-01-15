@@ -260,7 +260,7 @@ We run a SystemD service - [extract_readings.service](https://github.com/BitKnit
 Notice the MonitorData class uses environment variables. We used the technique discussed [in this post](https://unix.stackexchange.com/questions/287743/making-environment-variables-available-for-downstream-processes-started-within-a).
 
 
-# Explore Readings with colab
+# [Explore Readings with colab](#colab_readings)
 Onto exploring the data!
 
 For this part of the workflow, we use [SSHFS](https://github.com/BitKnitting/FitHome/wiki/RaspPi#mount-drive), colab, and some simple utility functions to start playing with the data.  Steps:
