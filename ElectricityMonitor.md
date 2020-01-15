@@ -253,7 +253,7 @@ users
 { "_id" : ObjectId("5dd975e574fece1e23950259"), "name" : "Cristina" }
 { "_id" : ObjectId("5dd975e574fece1e2395025a"), "name" : "Derek" }
 ```
-## Export Readings to Pandas
+## [Export Readings to Pandas](#readings_to_pandas)
 We run a SystemD service - [extract_readings.service](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.service) that relies on a [SystemD timer file](https://wiki.archlinux.org/index.php/Systemd/Timers) -  [extract_readings.timer](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.timer) - to run
  [extract_readings.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/extract_readings.py).  This python script relies on the [MonitorData](https://github.com/BitKnitting/FitHome_monitor/blob/master/data_extraction/monitor_data.py) to get the records out of the mongodb (database = FitHome, collection = aggregate) and create a pickled zip file.  We chose this format because it is easy to read the data with the Pandas package.
  ### Environment Variables
@@ -263,18 +263,15 @@ Notice the MonitorData class uses environment variables. We used the technique d
 # Explore Readings with colab
 Onto exploring the data!
 
-For this part of the workflow, we use SSHFS, colab, and some simple utility functions to start playing with the data.
+For this part of the workflow, we use [SSHFS](https://github.com/BitKnitting/FitHome/wiki/RaspPi#mount-drive), colab, and some simple utility functions to start playing with the data.  Steps:
+- Mount the Rasp Pi's drive so we can access it like a local drive. e.g.:
+```
+sshfs pi@192.168.86.20: /Users/auser/mount
+```
+Now we can see the aggregate file created by the SystemD service within our file system.
 
-S
-- Google colab
-- SSHFS
-
-
-
-_TODO: NEED TO UPDATE_  
-Now that we have the data, let's take a quick look in [a colab notebook](https://colab.research.google.com/github/BitKnitting/FitHome_monitor/blob/master/data_extraction/FitHome_monitor_aggregate_readings.ipynb).
-
-
+![aggregate file in filesystem](images/EnergyMonitorFirmware/data_extraction_mount.png)
+- open a [colab notebook](https://colab.research.google.com/notebooks/welcome.ipynb#recent=true)
 
 
 
