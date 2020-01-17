@@ -271,7 +271,9 @@ sshfs pi@192.168.86.20: /Users/auser/mount
 Now we can see the aggregate file created by the SystemD service within our file system.
 
 ![aggregate file in filesystem](images/EnergyMonitorFirmware/data_extraction_mount.png)
-- open a [colab notebook](https://colab.research.google.com/notebooks/welcome.ipynb#recent=true)
+ 
+We have a colab notebook - [00-load_data.ipynb](https://colab.research.google.com/github/BitKnitting/FitHome_monitor/blob/master/notebooks/00_load_data.ipynb) that walks you through loading the aggregated data into a pandas dataframe.
+
 
 
 
