@@ -268,6 +268,13 @@ For this part of the workflow, we use [SSHFS](https://github.com/BitKnitting/Fit
 ```
 sshfs pi@192.168.86.20: /Users/auser/mount
 ```
+You will have a different mount point as well as Rasp Pi username and IP address.
+Navigate to the file where the updated aggregate readings are located.  Our file was located in:  
+```
+pi@raspberrypi:~/projects/FitHome_monitor/data_extraction
+```  
+We use the default filename: ```aggregate.pkl.zip```
+
 Now we can see the aggregate file created by the SystemD service within our file system.
 
 ![aggregate file in filesystem](images/EnergyMonitorFirmware/data_extraction_mount.png)
