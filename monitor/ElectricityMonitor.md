@@ -166,7 +166,7 @@ The [atm90e32 class](https://github.com/BitKnitting/FitHome_monitor/blob/master/
 ## The atm90e32 Python Class
 The class:
 - initializes the monitor by setting the calibration properties.  Calibration properties differ depending on the CT and power supply used with the moniter (see below).
-- gets the power readings.
+- fetches the power readings.
 
 ### Calibration 
 We need to calibrate prior to using the library.  The default values are discussed in [Circuit Setup's documentation](https://github.com/CircuitSetup/Split-Single-Phase-Energy-Meter#calibration).  
