@@ -39,7 +39,7 @@ Picture 1:
 ![breaker box](images/breaker_box.jpg)   
 _Overview picture of breaker box_ 
 
-Then post the image to our GitHub.  This way, we can learn more about how houses have their electrical service panels installed.  By doing so, we can make this project more robust and accomodating to differing installations.  
+Then post the image to our GitHub.  This way, we can learn more about how houses have their electrical service panels installed.  By doing so, we can make this project more robust and accomodating differing installations.  
 
 ### House Wiring
 You'll need to know what "service" your house is wired for.  As we note below, many homes are wired for 100 Amp service.  As the typical home's energy use increased, the installed "service" was increased to 200 Amps. The term 200 Amp service is somewhat of a misnomer. Many think the term refers to the maximum continuously available current supplied from their electrical utility. But that's not correct. It refers to the rating of the _weakest link_ in the Service Entrance Wiring/Load Center/Meter/Meter Base/Main Breaker chain. Read about the characteristics of a CT below to figure out which CT will work with your Service Entrance Wires.  Send the info on the CT you will be using to GitHub so we can better understand how to accomodate the wide variety of electrical hardware we are building this monitor for.
