@@ -5,7 +5,7 @@ The goal of this document is to get your home electricity monitoring system up a
 
 # Overview
 
-The Electricity Monitor communicates to a Raspberry Pi ovia SPI to read and send active and reactive aggregate power readings to the Pi.  Readings are stored within the Pi's mongo DB.  
+The Electricity Monitor communicates to a Raspberry Pi via SPI to read and send active and reactive aggregate power readings to the Pi.  Readings are stored within the Pi's mongo DB.  
 
 ![overview](images/Electricity_Monitor_Rasp_Pi.png)  
   
