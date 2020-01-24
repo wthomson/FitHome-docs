@@ -155,7 +155,8 @@ _The upshot here is basically never connect anything to CE0 (or CE1 for that mat
 ![CS_SPI_PINS](images/CircuitSetupPins.png)
 # Test SPI
 Run [atm90e32_spi_test.py](https://github.com/BitKnitting/FitHome_monitor/blob/master/atm90e32_spi_test.py).  It performs a simple SPI read.  Here is an image of the traffic from our logic analyzer:
-![SPI_read_logic](images/SPI_read_test.png) 
+![SPI_read_logic](images/SPI_read_test.png)
+
 Now we know SPI reads are working correctly.
 
 # Getting to Power Readings
