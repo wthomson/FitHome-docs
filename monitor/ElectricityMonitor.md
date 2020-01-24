@@ -20,7 +20,8 @@ There is _so much_ prior work that made it easier to evolve the atm90e32 micropy
 
 # Hardware
 The hardware we use to gather readings include:
-- Two Current Transformers (CTs) attached to your Service Entrance Wires (see the discussion on Current Transformers below).
+- Two Current Transformers (CTs) attached to your Service Entrance Wires
+(see the discussion on Current Transformers below).
 - [CircuitSetup's Split Single Phase Real Time Whole House Energy Meter (v 1.4)](https://circuitsetup.us/index.php/product/split-single-phase-real-time-whole-house-energy-meter-v1-4/) is the breakout board we use.   This breakout board is based on the [ATM90e32 chip](https://www.microchip.com/wwwproducts/en/atm90e32as).
 
 In addition to the monitor, the breakout board needs a [9V AC Transformer](https://amzn.to/2t7AUro).  What transformer you use becomes important because there are calibration steps (see the Calibration section below) that require different "numbers" depending on the transformer. 
