@@ -1,2 +1,0 @@
-# Using PlugE for Electricity Leaks
-Armed with results from [a leaks analysis](LeaksAnalysis.md), the homeowner will use [PlugE](PlugE.md) to understand what plugs are being used by devices that are leaking the most electricity.  
