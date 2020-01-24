@@ -140,9 +140,8 @@ We'll connect:
 - SPI between the two boards.
 - a Red and Green LED onto the Pi.  
 ## SPI Pins on Pi
-We've tried this on the RasPi 3B+, Zero W, 3 B v1.2 
-  
-The diagram below shows the Pi 3B+ pinout:
+We've tried this on the RasPi 3B+, Zero W, 3B v1.2
+
 ![RaspPi pinout](images/RaspPi_pinout.png)
 - MOSI: pin 19
 - MISO: pin 21
