@@ -9,7 +9,7 @@ Welcome to the FitHome Wiki.  FitHome is a one month home training experience th
 ## Electricity Monitor
 The [Electricity Monitor](ElectricityMonitor.md) sends the home's power readings to the __FitHome app__ running on an iOS or Android SmartPhone.  The FitHome app provides realtime feedback on the impact the homeowner's electricity use choices is having on:
 - How much money is being saved.
-- How much CO2 is being saved by noting the equivalent gas, oil consumed as well as trees planted.
+- How much CO<sub>2</sub> is being saved by noting the equivalent gas, oil consumed as well as trees planted.
 
 ![overview](images/Overview/FitHome_Experience.png)  
 The FitHome app provides the user with:
